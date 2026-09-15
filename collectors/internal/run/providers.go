@@ -56,7 +56,7 @@ func setupProvider(ctx context.Context, opts Options, led *ledger.Ledger, onlyRe
 }
 
 func setupAWS(ctx context.Context, opts Options, led *ledger.Ledger, onlyRegions map[string]bool) (*binding, error) {
-	cli, err := awsprov.Load(ctx, opts.Profile, opts.BootstrapRegion)
+	cli, err := awsprov.Load(ctx, opts.Profile, opts.BootstrapRegion, opts.Debug)
 	if err != nil {
 		return nil, fmt.Errorf("aws auth: %w", err)
 	}

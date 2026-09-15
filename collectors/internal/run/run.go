@@ -6,7 +6,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"time"
 
@@ -15,6 +17,7 @@ import (
 	"thunderstorm/collector/internal/model"
 	"thunderstorm/collector/internal/output"
 	"thunderstorm/collector/internal/planner"
+	"thunderstorm/collector/internal/progress"
 	"thunderstorm/collector/internal/registry"
 	"thunderstorm/collector/internal/scheduler"
 	"thunderstorm/collector/internal/version"
@@ -32,6 +35,7 @@ type Options struct {
 	IncludeBlobs     bool
 	Resume           bool
 	Verbose          bool // print per-op detail; default is a concise summary
+	Debug            bool // stream every op in/out/error to stderr (implies Verbose)
 	Quiet            bool // suppress the per-scope console output (used in parallel multi-scope runs)
 	ScopeConcurrency int  // multi-scope: how many scopes to collect in parallel (0/1 = sequential)
 
@@ -102,7 +106,12 @@ func Collect(ctx context.Context, opts Options) (*Result, error) {
 	if opts.Concurrency <= 0 {
 		opts.Concurrency = 12
 	}
-	pr := printer{quiet: opts.Quiet}
+	// --debug turns on everything: per-op in/out/error to stderr AND the richer
+	// verbose stdout breakdowns.
+	if opts.Debug {
+		opts.Verbose = true
+	}
+	pr := printer{quiet: opts.Quiet, verbose: opts.Verbose}
 	// Locate the repo tree for live catalogs/manifests when running inside it.
 	// Outside the repo (a shipped single binary), root stays "" and every loader
 	// falls back to the assets embedded in the binary.
@@ -121,8 +130,8 @@ func Collect(ctx context.Context, opts Options) (*Result, error) {
 	if err := version.CheckCompatible(contract); err != nil {
 		return nil, fmt.Errorf("catalog incompatible: %w", err)
 	}
-	pr.vprintf(opts.Verbose, "catalog contract %s OK (collector %s supports %s)\n",
-		contract, version.CollectorVersion, version.SupportedRange())
+	pr.vprintf(opts.Verbose, "  %-*s %s\n", LabelWidth, "catalog",
+		fmt.Sprintf("contract %s OK (collector %s supports %s)", contract, version.CollectorVersion, version.SupportedRange()))
 
 	started := time.Now().UTC()
 	stats := Stats{StartedAt: started}
@@ -184,9 +193,6 @@ func Collect(ctx context.Context, opts Options) (*Result, error) {
 		regNote += fmt.Sprintf(" · %d ops unimplemented", len(skippedOps))
 	}
 	pr.kv("registry", regNote)
-	if opts.Verbose && len(skippedOps) > 0 {
-		pr.vprintf(true, "  unimplemented ops: %s\n", strings.Join(skippedOps, ", "))
-	}
 
 	seeds := planner.Seed(reg, bind.account, collectable, bind.globalCall)
 
@@ -213,9 +219,40 @@ func Collect(ctx context.Context, opts Options) (*Result, error) {
 
 	t0 := time.Now()
 	sched := scheduler.New(bind.cli, bind.classify, led, b, opts.Concurrency)
+	if opts.Debug {
+		sched.SetDebug(os.Stderr)
+	}
+	// Live progress: the seed count (one enumerate per resource-type × scope) is a
+	// known, monotonic denominator, so the percentage is real — never estimated.
+	bar := pr.bar("collect", len(seeds), func() progress.Snapshot {
+		s := sched.Snapshot()
+		note := fmt.Sprintf("%s artifacts", comma(s.Artifacts))
+		if s.Denied > 0 {
+			note += fmt.Sprintf(" · %s denied", comma(s.Denied))
+		}
+		if s.Throttled > 0 {
+			note += fmt.Sprintf(" · %s throttled", comma(s.Throttled))
+		}
+		if s.Errored > 0 {
+			note += fmt.Sprintf(" · %s errored", comma(s.Errored))
+		}
+		return progress.Snapshot{Done: s.SeedsDone, Total: len(seeds), Note: note}
+	})
+	// Verbose: stream a line the first time each resource type begins collecting,
+	// printed above the live bar.
+	if opts.Verbose && bar.b != nil {
+		sched.SetOnClusterStart(func(rt string) { bar.b.Log("  → " + rt) })
+	}
 	nArtifacts := sched.Run(ctx, seeds)
+	bar.stop()
 	stats.SeedTasks, stats.Artifacts, stats.CollectDur = len(seeds), nArtifacts, time.Since(t0)
-	pr.phase("collect", fmt.Sprintf("%d artifacts · %d tasks", nArtifacts, len(seeds)), stats.CollectDur)
+	snap := sched.Snapshot()
+	pr.phase("collect", fmt.Sprintf("%s artifacts · %s ops", comma(nArtifacts), comma(len(seeds))), stats.CollectDur)
+	if opts.Verbose {
+		pr.vprintf(true, "               %s ok · %s empty · %s denied · %s throttled · %s errored · %s detail calls\n",
+			comma(snap.OK), comma(snap.Empty), comma(snap.Denied), comma(snap.Throttled), comma(snap.Errored), comma(snap.Detail))
+		pr.serviceBreakdown(led.Rows())
+	}
 
 	// --- Exposure prober over the read_api catalog. ---
 	sites, err := exposure.LoadCatalog(bind.name)
@@ -225,23 +262,39 @@ func Collect(ctx context.Context, opts Options) (*Result, error) {
 	salt := bind.account + "|" + started.Format(time.RFC3339)
 	t0 = time.Now()
 	prober := exposure.NewProber(bind.fetchers, bind.listFetchers, collectable, bind.classify, led, b, bundleDir, salt, bind.account, opts.Concurrency)
+	prober.SetTotal(len(sites))
+	if opts.Debug {
+		prober.SetDebug(os.Stderr)
+	}
+	ebar := pr.bar("exposure", len(sites), func() progress.Snapshot {
+		s := prober.Snapshot()
+		note := fmt.Sprintf("%s hits", comma(s.Hits))
+		return progress.Snapshot{Done: s.SitesDone, Total: s.Total, Note: note}
+	})
 	es := prober.Run(ctx, sites)
+	ebar.stop()
 	stats.ExposureTotal, stats.ExposureReadAPI, stats.ExposureSurfaces = es.Total, es.ReadAPI, es.Surfaces
 	stats.ExposureProbed, stats.ExposureHits, stats.ExposureDur = es.Probed, es.Hits, time.Since(t0)
-	pr.phase("exposure", fmt.Sprintf("%d hits · %d probed · %d sites", es.Hits, es.Probed, es.Total), stats.ExposureDur)
+	pr.phase("exposure", fmt.Sprintf("%s hits · %s probed · %s sites", comma(es.Hits), comma(es.Probed), comma(es.Total)), stats.ExposureDur)
 	if opts.Verbose {
-		pr.vprintf(true, "  %d read_api · %d surfaces · %d no-probe · %d no-inventory\n",
-			es.ReadAPI, es.Surfaces, es.SkippedNoProbe, es.SkippedNoInventory)
+		pr.vprintf(true, "               %s read_api · %s surfaces · %s no-probe · %s no-inventory · %s denied\n",
+			comma(es.ReadAPI), comma(es.Surfaces), comma(es.SkippedNoProbe), comma(es.SkippedNoInventory), comma(es.Denied))
 	}
 
 	// --- Facts tier: policy/trust/network facts -> graph EDGES. ---
 	t0 = time.Now()
 	nFacts := 0
 	if bind.collectFacts != nil {
+		// Facts have no upfront total (each provider fans out its own tasks), so
+		// this is a spinner with elapsed rather than a percentage bar.
+		fbar := pr.bar("facts", 0, func() progress.Snapshot {
+			return progress.Snapshot{Note: "collecting policy · trust · network facts"}
+		})
 		nFacts = bind.collectFacts(ctx, led, b, opts.Concurrency)
+		fbar.stop()
 	}
 	stats.Facts, stats.FactsDur = nFacts, time.Since(t0)
-	pr.phase("facts", fmt.Sprintf("%d facts", nFacts), stats.FactsDur)
+	pr.phase("facts", fmt.Sprintf("%s facts", comma(nFacts)), stats.FactsDur)
 
 	deniedPerms := deniedPermissions(led.Rows())
 
@@ -309,7 +362,10 @@ const LabelWidth = 12
 
 // printer gates a run's console output. In parallel multi-scope runs it is quiet so
 // concurrent scopes don't interleave; the orchestrator prints a concise per-scope line.
-type printer struct{ quiet bool }
+type printer struct {
+	quiet   bool
+	verbose bool
+}
 
 // kv prints an aligned "  label   value" metadata line.
 func (p printer) kv(label, value string) {
@@ -333,6 +389,95 @@ func (p printer) vprintf(verbose bool, format string, a ...any) {
 		return
 	}
 	fmt.Printf(format, a...)
+}
+
+// phaseBar is a running progress bar handle; stop() erases the live line so the
+// caller's permanent phase() summary line takes its place. In quiet mode it is a
+// no-op (multi-scope parallel runs render one line per scope instead).
+type phaseBar struct{ b *progress.Bar }
+
+func (h phaseBar) stop() {
+	if h.b != nil {
+		h.b.Stop()
+	}
+}
+
+// bar starts a live progress bar for a phase (unless quiet). total<=0 renders a
+// spinner (indeterminate work).
+func (p printer) bar(label string, total int, poll func() progress.Snapshot) phaseBar {
+	if p.quiet {
+		return phaseBar{}
+	}
+	b := progress.New(os.Stdout, label, LabelWidth, poll)
+	b.Start()
+	return phaseBar{b: b}
+}
+
+// serviceBreakdown prints the top collected services by resource count (verbose).
+func (p printer) serviceBreakdown(rows []model.LedgerRow) {
+	if p.quiet {
+		return
+	}
+	counts := map[string]int{}
+	for _, r := range rows {
+		if r.Status != model.OutcomeOK || r.Count == 0 {
+			continue
+		}
+		parts := strings.Split(r.ResourceType, ":")
+		if len(parts) >= 2 && parts[0] != "exposure" && !strings.HasSuffix(r.ResourceType, ":scope") {
+			counts[parts[1]] += r.Count
+		}
+	}
+	if len(counts) == 0 {
+		return
+	}
+	type kv struct {
+		svc string
+		n   int
+	}
+	list := make([]kv, 0, len(counts))
+	for s, n := range counts {
+		list = append(list, kv{s, n})
+	}
+	sort.Slice(list, func(i, j int) bool {
+		if list[i].n != list[j].n {
+			return list[i].n > list[j].n
+		}
+		return list[i].svc < list[j].svc
+	})
+	top := list
+	if len(top) > 15 {
+		top = top[:15]
+	}
+	parts := make([]string, 0, len(top))
+	for _, e := range top {
+		parts = append(parts, fmt.Sprintf("%s %s", e.svc, comma(e.n)))
+	}
+	fmt.Printf("               top services: %s", strings.Join(parts, " · "))
+	if len(list) > len(top) {
+		fmt.Printf(" · (+%d more)", len(list)-len(top))
+	}
+	fmt.Println()
+}
+
+// comma renders an int with thousands separators (e.g. 60861 -> "60,861").
+func comma(n int) string {
+	s := fmt.Sprintf("%d", n)
+	neg := strings.HasPrefix(s, "-")
+	if neg {
+		s = s[1:]
+	}
+	var out strings.Builder
+	for i := 0; i < len(s); i++ {
+		if i > 0 && (len(s)-i)%3 == 0 {
+			out.WriteByte(',')
+		}
+		out.WriteByte(s[i])
+	}
+	if neg {
+		return "-" + out.String()
+	}
+	return out.String()
 }
 
 // FmtDur renders a duration compactly: sub-minute to 0.1s, else whole seconds.

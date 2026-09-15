@@ -4,10 +4,14 @@ import (
 	"bufio"
 	"context"
 	"encoding/json"
+	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
 	"sync"
+	"sync/atomic"
+	"time"
 
 	"thunderstorm/collector/internal/ledger"
 	"thunderstorm/collector/internal/model"
@@ -67,6 +71,34 @@ type Prober struct {
 	invCache map[string][]model.Artifact // resourceType -> artifacts
 	fetch    map[string]any              // (op|region|id) -> response
 	fetchErr map[string]error
+
+	// Live counters (atomic) for a progress renderer that polls Snapshot.
+	sitesDone atomic.Int64
+	hitsC     atomic.Int64
+	total     int
+	debug     io.Writer // non-nil in --debug: per-fetch in/out/error → stderr
+}
+
+// SetDebug enables per-fetch in/out/error logging to w (typically stderr).
+func (p *Prober) SetDebug(w io.Writer) { p.debug = w }
+
+// SetTotal records the site count so Snapshot can report an accurate percentage.
+func (p *Prober) SetTotal(n int) { p.total = n }
+
+// ProbeProgress is a lock-free live snapshot of the exposure phase.
+type ProbeProgress struct {
+	SitesDone int
+	Total     int
+	Hits      int
+}
+
+// Snapshot returns the current exposure counters for a live progress renderer.
+func (p *Prober) Snapshot() ProbeProgress {
+	return ProbeProgress{
+		SitesDone: int(p.sitesDone.Load()),
+		Total:     p.total,
+		Hits:      int(p.hitsC.Load()),
+	}
 }
 
 func NewProber(fetchers FetcherSet, listFetchers ListFetcherSet, regions []string, classify Classifier,
@@ -86,6 +118,7 @@ func NewProber(fetchers FetcherSet, listFetchers ListFetcherSet, regions []strin
 // mutex-guarded. This phase used to run strictly one site at a time — the biggest
 // serial cost on large accounts after the facts phase.
 func (p *Prober) Run(ctx context.Context, sites []Site) Summary {
+	p.total = len(sites)
 	sum := Summary{Total: len(sites)}
 	var sumMu sync.Mutex
 	sem := make(chan struct{}, p.concurrency)
@@ -106,6 +139,7 @@ func (p *Prober) Run(ctx context.Context, sites []Site) Summary {
 
 // probeSite probes one site and folds its outcome into sum (under sumMu).
 func (p *Prober) probeSite(ctx context.Context, s Site, sum *Summary, sumMu *sync.Mutex) {
+	defer p.sitesDone.Add(1)
 	add := func(f func(*Summary)) { sumMu.Lock(); f(sum); sumMu.Unlock() }
 
 	task := "exposure/" + s.ID
@@ -172,6 +206,7 @@ func (p *Prober) probeSite(ctx context.Context, s Site, sum *Summary, sumMu *syn
 		}
 	case hits > 0:
 		add(func(sm *Summary) { sm.Hits += hits })
+		p.hitsC.Add(int64(hits))
 		p.led.Finish(task, model.OutcomeOK, hits, "")
 	default:
 		p.led.Finish(task, model.OutcomeEmpty, 0, "")
@@ -222,6 +257,7 @@ func (p *Prober) runListFetcher(ctx context.Context, task string, s Site, lf Lis
 		}
 	case hits > 0:
 		add(func(sm *Summary) { sm.Hits += hits })
+		p.hitsC.Add(int64(hits))
 		p.led.Finish(task, model.OutcomeOK, hits, "")
 	default:
 		p.led.Finish(task, model.OutcomeEmpty, 0, "")
@@ -245,13 +281,32 @@ func (p *Prober) cachedFetch(ctx context.Context, f Fetcher, op string, art mode
 	for k, v := range art.Attributes {
 		item[k] = v
 	}
+	t0 := time.Now()
 	resp, err := f.Fetch(ctx, art.Scope.Region, item)
+	p.logFetch(op, art.Scope.Region, art.NativeID, time.Since(t0), err)
 
 	p.cacheMu.Lock()
 	p.fetch[key] = resp
 	p.fetchErr[key] = err
 	p.cacheMu.Unlock()
 	return resp, err
+}
+
+// logFetch writes one in/out/error debug line for an exposure probe fetch.
+func (p *Prober) logFetch(op, region, target string, dur time.Duration, err error) {
+	if p.debug == nil {
+		return
+	}
+	if region == "" {
+		region = "-"
+	}
+	if err != nil {
+		fmt.Fprintf(p.debug, "[debug] probe %s region=%s target=%s → ERROR %s: %s (%s)\n",
+			op, region, target, p.classify(err), shortErr(err), fmtDur(dur))
+		return
+	}
+	fmt.Fprintf(p.debug, "[debug] probe %s region=%s target=%s → ok (%s)\n",
+		op, region, target, fmtDur(dur))
 }
 
 // cachedListFetch is the self-enumerating analogue of cachedFetch, keyed per
@@ -265,7 +320,9 @@ func (p *Prober) cachedListFetch(ctx context.Context, lf ListFetcher, key, regio
 	}
 	p.cacheMu.Unlock()
 
+	t0 := time.Now()
 	r, err := lf.Fetch(ctx, region)
+	p.logFetch(key, region, "(self-enumerated)", time.Since(t0), err)
 
 	p.cacheMu.Lock()
 	p.fetch[key] = r
@@ -316,4 +373,12 @@ func shortErr(err error) string {
 		return s[:160]
 	}
 	return s
+}
+
+// fmtDur renders a duration compactly for debug lines.
+func fmtDur(d time.Duration) string {
+	if d < time.Second {
+		return d.Round(time.Millisecond).String()
+	}
+	return d.Round(10 * time.Millisecond).String()
 }

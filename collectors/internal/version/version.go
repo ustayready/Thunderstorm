@@ -17,7 +17,11 @@ import (
 )
 
 const (
-	CollectorVersion    = "0.1.0-dev"
+	// CollectorVersion is the Thunderstorm collector's OWN version — independent of
+	// the embedded RAGE snapshot (assets.RageVersion()), the catalog contract range,
+	// the bundle schema, and the engine floor below. Bump freely for collector
+	// changes without touching those compatibility contracts.
+	CollectorVersion    = "0.2.0-dev"
 	BundleSchemaVersion = "1.0.0"
 	MinEngine           = "0.1.0"
 

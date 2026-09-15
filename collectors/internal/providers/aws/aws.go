@@ -28,7 +28,7 @@ type Client struct {
 // the SDK default of 3. Without this, running many fact collectors in parallel
 // throttles IAM and silently drops policy documents (e.g. AdministratorAccess),
 // which makes admins look like they have no permissions.
-func Load(ctx context.Context, profile, bootstrapRegion string) (*Client, error) {
+func Load(ctx context.Context, profile, bootstrapRegion string, debug bool) (*Client, error) {
 	opts := []func(*config.LoadOptions) error{
 		config.WithRegion(bootstrapRegion),
 		config.WithRetryMode(aws.RetryModeAdaptive),
@@ -36,6 +36,12 @@ func Load(ctx context.Context, profile, bootstrapRegion string) (*Client, error)
 	}
 	if profile != "" {
 		opts = append(opts, config.WithSharedConfigProfile(profile))
+	}
+	// --debug: emit SDK-level request/response/retry wire logs (to the SDK's
+	// default logger, stderr) so every HTTP call in/out is visible.
+	if debug {
+		opts = append(opts, config.WithClientLogMode(
+			aws.LogRequest|aws.LogResponse|aws.LogRetries|aws.LogDeprecatedUsage))
 	}
 	cfg, err := config.LoadDefaultConfig(ctx, opts...)
 	if err != nil {

@@ -13,8 +13,10 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"strings"
+	"syscall"
 	"time"
 
 	engrun "thunderstorm/engine/run"
@@ -57,6 +59,9 @@ func usage() {
   scan     --profile <p> [--provider aws] [--region r] [--only-regions a,b] [--out <dir|.zip>]
            Collect (read-only) + build the attack-path graph + write ONE RAGE engagement.zip.
            Default output: ./output/thunderstorm-<provider>-<account>-<ts>.zip
+           -v/--verbose  richer per-phase detail (per-service breakdown, outcome counts)
+           --debug       stream every API call in/out/error to stderr (implies --verbose)
+           Long scans survive terminal hangup (SIGHUP ignored); Ctrl-C stops cleanly.
   redact   --in <engagement.zip> --out <path> [--audit <path>]
            Rewrite an engagement into a de-identified, graph-isomorphic copy.
   view     [--in <engagement.zip|.ndjson>]
@@ -85,7 +90,29 @@ func collectFlags(fs *flag.FlagSet) *run.Options {
 	fs.BoolVar(&o.Resume, "resume", false, "resume a prior bundle at the work dir")
 	fs.BoolVar(&o.Verbose, "verbose", false, "print per-operation detail (default: concise summary)")
 	fs.BoolVar(&o.Verbose, "v", false, "shorthand for --verbose")
+	fs.BoolVar(&o.Debug, "debug", false, "stream every API call in/out/error to stderr (implies --verbose)")
 	return o
+}
+
+// runContext returns a context wired for long, unattended scans:
+//   - SIGHUP is IGNORED so a dropped SSH/terminal session never kills a run that
+//     may take far longer than the session stays up (the reported failure mode).
+//   - SIGINT/SIGTERM cancel the context so in-flight work stops and the workdir is
+//     preserved; a second interrupt force-quits.
+func runContext() context.Context {
+	signal.Ignore(syscall.SIGHUP)
+	ctx, cancel := context.WithCancel(context.Background())
+	ch := make(chan os.Signal, 2)
+	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
+	go func() {
+		<-ch
+		fmt.Fprintln(os.Stderr, "\ninterrupt — stopping in-flight work and keeping the workdir (Ctrl-C again to force-quit)")
+		cancel()
+		<-ch
+		fmt.Fprintln(os.Stderr, "forced quit")
+		os.Exit(130)
+	}()
+	return ctx
 }
 
 func cmdScan(args []string) {
@@ -128,7 +155,7 @@ func cmdScan(args []string) {
 	}
 
 	opts.Out = filepath.Join(work, "bundle")
-	res, err := run.Collect(context.Background(), *opts)
+	res, err := run.Collect(runContext(), *opts)
 	if err != nil {
 		failWorkdir(err)
 	}
@@ -169,7 +196,7 @@ func cmdScan(args []string) {
 // into one full/ tree, builds ONE graph over the union, and writes a single RAGE
 // engagement.zip.
 func cmdScanMulti(fs *flag.FlagSet, opts *run.Options, sel run.Selector, out, workDir string, keep bool) {
-	ctx := context.Background()
+	ctx := runContext()
 	work := workDir
 	if work == "" {
 		var err error

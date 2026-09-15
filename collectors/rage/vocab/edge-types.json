@@ -1,0 +1,1490 @@
+{
+  "$comment": "RAGE edge-type registry \u2014 the provider-independent relationship vocabulary. OPEN: consumers may introduce their own types. Semantics of WHAT an edge means live here; HOW each edge is derived per cloud lives in rules/derivation.json.",
+  "spec_version": "0.1",
+  "categories": {
+    "structural": {
+      "doc": "Inventory/containment. Not attack-traversable by default.",
+      "relationship_kinds": [
+        "STRUCTURAL"
+      ]
+    },
+    "identity_authz": {
+      "doc": "Membership, roles, permission grants, trust & policy mutation.",
+      "relationship_kinds": [
+        "AUTHORIZATION"
+      ]
+    },
+    "execution": {
+      "doc": "Causing attacker-controlled code to run as some identity.",
+      "relationship_kinds": [
+        "EXECUTION"
+      ]
+    },
+    "credential": {
+      "doc": "Reading/creating/using credential & key material.",
+      "relationship_kinds": [
+        "CREDENTIAL"
+      ]
+    },
+    "resource_control": {
+      "doc": "Read/write/admin/ownership over resources.",
+      "relationship_kinds": [
+        "CONTROL"
+      ]
+    },
+    "network": {
+      "doc": "Reachability & exposure.",
+      "relationship_kinds": [
+        "NETWORK"
+      ]
+    },
+    "data": {
+      "doc": "Data-plane access & exfiltration.",
+      "relationship_kinds": [
+        "STRUCTURAL",
+        "CREDENTIAL",
+        "CONTROL"
+      ]
+    },
+    "cross_boundary": {
+      "doc": "Movement across accounts/projects/subs/tenants/orgs.",
+      "relationship_kinds": [
+        "AUTHORIZATION",
+        "CREDENTIAL",
+        "CONTROL"
+      ]
+    },
+    "derived": {
+      "doc": "Computed capability summarizing a multi-edge chain.",
+      "relationship_kinds": [
+        "DERIVED_ATTACK_PATH"
+      ]
+    }
+  },
+  "edge_states": {
+    "ACTIVE": "All preconditions satisfied now; directly traversable.",
+    "CONDITIONAL": "Traversable only if listed conditions hold (e.g. trigger exists, network reachable).",
+    "POTENTIAL": "Capability could be created by the source (e.g. can add a trigger) but is not yet realized.",
+    "BLOCKED": "An explicit deny / guardrail (SCP, deny assignment, deny policy, boundary) neutralizes it.",
+    "UNKNOWN": "Insufficient collection to decide; surfaced for analyst review, excluded from default paths."
+  },
+  "edge_types": {
+    "Contains": {
+      "category": "structural",
+      "relationship_kind": "STRUCTURAL",
+      "nature": "explicit",
+      "source": [
+        "AdministrativeBoundary",
+        "ObjectStorage",
+        "Data",
+        "Secret",
+        "ManagementService"
+      ],
+      "target": [
+        "*"
+      ],
+      "walkable": false,
+      "base_weight": null,
+      "high_value": false,
+      "doc": "Container holds child resources/objects: administrative boundaries, storage containers, data stores (SQL servers and their databases/firewall rules), secret vaults (Key Vault and its secrets/keys), management services and their artifacts."
+    },
+    "LocatedIn": {
+      "category": "structural",
+      "relationship_kind": "STRUCTURAL",
+      "nature": "explicit",
+      "source": [
+        "*"
+      ],
+      "target": [
+        "AdministrativeBoundary",
+        "Network"
+      ],
+      "walkable": false,
+      "base_weight": null,
+      "high_value": false,
+      "doc": "Placement metadata (region/subnet). Useful for filtering, not traversal."
+    },
+    "AttachedTo": {
+      "category": "structural",
+      "relationship_kind": "STRUCTURAL",
+      "nature": "explicit",
+      "source": [
+        "NetworkInterface",
+        "BlockStorage",
+        "ManagedIdentity",
+        "IAMPolicy"
+      ],
+      "target": [
+        "Compute",
+        "VirtualNetwork",
+        "Identity"
+      ],
+      "walkable": false,
+      "base_weight": null,
+      "high_value": false,
+      "doc": "Physical/logical attachment. Semantic edges (ExecutesAs, HasPolicy) carry the security meaning."
+    },
+    "MemberOf": {
+      "category": "identity_authz",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Group",
+        "Role"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source inherits the target's permissions via membership."
+    },
+    "HasRole": {
+      "category": "identity_authz",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Role"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Principal is directly granted a role (Entra role, GCP role binding, IAM role attachment)."
+    },
+    "HasPolicy": {
+      "category": "identity_authz",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "explicit",
+      "source": [
+        "Identity",
+        "*"
+      ],
+      "target": [
+        "Policy"
+      ],
+      "walkable": false,
+      "base_weight": null,
+      "high_value": false,
+      "doc": "A policy artifact is attached to a principal/resource. Feeds the permission evaluator; not walked directly."
+    },
+    "HasPermission": {
+      "category": "identity_authz",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "both",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "*"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "EFFECTIVE permission (post evaluation) of an action on a target. Produced by the permission engine / effective-permission evaluator."
+    },
+    "CanAssume": {
+      "category": "identity_authz",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "both",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Role",
+        "MachineIdentity",
+        "ServiceAccount"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source can obtain the target identity's credentials/session (role assumption)."
+    },
+    "CanImpersonate": {
+      "category": "identity_authz",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "both",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "ServiceAccount",
+        "MachineIdentity",
+        "ManagedIdentity",
+        "WorkloadIdentity",
+        "ApplicationIdentity"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source acts as target without holding long-lived creds (GCP SA impersonation, act-on-behalf-of)."
+    },
+    "CanFederateAs": {
+      "category": "identity_authz",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "both",
+      "source": [
+        "Identity",
+        "FederatedIdentity",
+        "WorkloadIdentity"
+      ],
+      "target": [
+        "Role",
+        "ServiceAccount",
+        "MachineIdentity"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "External/workload identity is trusted to federate into a CSP identity (OIDC/SAML/Workload Identity)."
+    },
+    "CanDelegate": {
+      "category": "identity_authz",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "both",
+      "source": [
+        "Identity",
+        "ApplicationIdentity"
+      ],
+      "target": [
+        "Identity"
+      ],
+      "walkable": true,
+      "base_weight": 2,
+      "high_value": false,
+      "doc": "Domain-wide/OAuth delegation to act for other principals."
+    },
+    "CanPassIdentity": {
+      "category": "identity_authz",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Role",
+        "ServiceAccount",
+        "ManagedIdentity",
+        "MachineIdentity",
+        "VirtualMachine"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source may attach/pass the target identity to a NEW or existing workload (prereq for CanExecuteAs)."
+    },
+    "CanCreateCredentialFor": {
+      "category": "credential",
+      "relationship_kind": "CREDENTIAL",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Identity",
+        "ApplicationIdentity",
+        "ServiceAccount",
+        "MachineIdentity"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source can mint a NEW long-lived/short-lived credential for the target and thus authenticate as it."
+    },
+    "CanResetCredential": {
+      "category": "credential",
+      "relationship_kind": "CREDENTIAL",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Identity",
+        "HumanIdentity"
+      ],
+      "walkable": true,
+      "base_weight": 2,
+      "high_value": false,
+      "doc": "Source can reset/replace target's password/MFA and take over."
+    },
+    "CanModifyTrust": {
+      "category": "identity_authz",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Role",
+        "TrustPolicy",
+        "ServiceAccount",
+        "MachineIdentity"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source can rewrite who may assume/impersonate the target \u2014 self-grant assumption."
+    },
+    "CanModifyPolicy": {
+      "category": "identity_authz",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "both",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Policy",
+        "Identity",
+        "*"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source can alter an identity/resource policy to grant itself/others more access. Produced both by explicit normalization (IAM/RBAC setPolicy grants) and by derived rules (deny-policy/org-policy modify capabilities that unlock gated edges)."
+    },
+    "CanGrantPermission": {
+      "category": "identity_authz",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "both",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Identity",
+        "Project",
+        "ResourceGroup",
+        "Subscription"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source can assign a role/permission to a principal (incl. itself) \u2014 privilege escalation primitive."
+    },
+    "CanAddMember": {
+      "category": "identity_authz",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Group",
+        "Role",
+        "ServiceIdentity"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source can add a principal (itself) to a group/role and inherit its permissions."
+    },
+    "CanRemoveMember": {
+      "category": "identity_authz",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Group",
+        "Role"
+      ],
+      "walkable": false,
+      "base_weight": null,
+      "high_value": false,
+      "doc": "Membership removal \u2014 mostly destructive/persistence, not escalation; not walked by default."
+    },
+    "ExecutesAs": {
+      "category": "execution",
+      "relationship_kind": "EXECUTION",
+      "nature": "explicit",
+      "source": [
+        "Compute",
+        "Messaging",
+        "AnalyticsService",
+        "DataWarehouse",
+        "DataLake",
+        "Data"
+      ],
+      "target": [
+        "Identity",
+        "ServiceIdentity",
+        "MachineIdentity",
+        "ServiceAccount",
+        "ManagedIdentity",
+        "Role"
+      ],
+      "walkable": true,
+      "base_weight": 0,
+      "high_value": true,
+      "doc": "A workload (Compute or Messaging) runs under the target identity. Zero-cost link (a fact, not an action) enabling CanExecuteAs derivations. Includes orchestration workflows, logic apps, and event consumers running as a specified identity."
+    },
+    "CanExecuteAs": {
+      "category": "execution",
+      "relationship_kind": "EXECUTION",
+      "nature": "derived",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Identity"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Attacker-controlled code can run with the target identity's privileges. Canonical derived escalation edge."
+    },
+    "CanModifyCode": {
+      "category": "execution",
+      "relationship_kind": "EXECUTION",
+      "nature": "both",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Compute",
+        "ContainerRegistry",
+        "ArtifactRepository",
+        "KubernetesWorkload",
+        "Messaging",
+        "AnalyticsService",
+        "AutomationService"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source can change the executable content a compute resource runs, including orchestration workflows and logic apps that are executable definitions. Produced by explicit normalization (code-update permissions) and by derived rules (supply-chain code-injection paths)."
+    },
+    "CanModifyConfiguration": {
+      "category": "execution",
+      "relationship_kind": "EXECUTION",
+      "nature": "both",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Compute",
+        "Messaging",
+        "Network",
+        "*"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source can change config (env vars, layers, startup command, identity binding) to gain execution or escalate. Produced by explicit normalization (control-plane config-update permissions) and by derived rules (trigger hijacking, notification redirection)."
+    },
+    "CanDeploy": {
+      "category": "execution",
+      "relationship_kind": "EXECUTION",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Compute",
+        "ContainerService",
+        "KubernetesCluster",
+        "ApplicationPlatform"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Source can deploy new workloads to a platform (then attach identity)."
+    },
+    "CanCreateWorkloadAs": {
+      "category": "execution",
+      "relationship_kind": "EXECUTION",
+      "nature": "derived",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Identity"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source can create a new compute resource bound to target identity (create + pass identity)."
+    },
+    "CanAttachIdentity": {
+      "category": "execution",
+      "relationship_kind": "EXECUTION",
+      "nature": "both",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Compute",
+        "Messaging",
+        "AnalyticsService",
+        "RelationalDatabase",
+        "LoadBalancer",
+        "Data"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Source can attach/replace the identity a compute resource runs as, including updating a workflow/orchestration service's execution identity. Also applies to data resources (caches, databases) where an identity is used for encryption or service-to-service auth. Produced both by explicit normalization (attach/assign permissions on target resources) and by derived rules (e.g., CanPassIdentity + CanModifyConfiguration on target)."
+    },
+    "CanExecuteCommand": {
+      "category": "execution",
+      "relationship_kind": "EXECUTION",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "VirtualMachine",
+        "Container",
+        "ContainerService",
+        "KubernetesWorkload",
+        "RemoteManagementService",
+        "AnalyticsService",
+        "Notebook",
+        "ApplicationPlatform",
+        "AutomationService"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source can run OS-level commands on a host/container/managed runtime (agent, run-command, exec, session-pool exec). Notebook targets cover managed notebook instances (Vertex AI Workbench, SageMaker) whose kernels execute arbitrary code as the instance's runtime identity."
+    },
+    "CanExecuteOn": {
+      "category": "execution",
+      "relationship_kind": "EXECUTION",
+      "nature": "derived",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Compute"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Generalized 'can get code running on this resource' (superset of command/deploy/modify)."
+    },
+    "CanTrigger": {
+      "category": "execution",
+      "relationship_kind": "EXECUTION",
+      "nature": "explicit",
+      "source": [
+        "Identity",
+        "Messaging",
+        "Storage",
+        "Network",
+        "AnalyticsService"
+      ],
+      "target": [
+        "Compute",
+        "Messaging",
+        "AnalyticsService"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Source can cause the target to execute (event source, schedule). Includes triggering compute workloads and orchestration workflows. AnalyticsService sources cover analytics engines that invoke compute as part of query execution (e.g. an Athena federated query invoking its Lambda data-source connector)."
+    },
+    "CanInvoke": {
+      "category": "execution",
+      "relationship_kind": "EXECUTION",
+      "nature": "explicit",
+      "source": [
+        "Identity",
+        "Messaging"
+      ],
+      "target": [
+        "ServerlessFunction",
+        "API",
+        "APIGateway",
+        "Workflow",
+        "ContainerService"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Source can directly invoke the target (completes an ExecutesAs escalation when code already attacker-controlled or config changed). Messaging sources include service-to-service invocations (API Gateway invoking Lambda, EventBridge invoking Lambda, etc.)."
+    },
+    "CanStart": {
+      "category": "execution",
+      "relationship_kind": "EXECUTION",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Compute"
+      ],
+      "walkable": true,
+      "base_weight": 2,
+      "high_value": false,
+      "doc": "Source can start a stopped resource (needed to realize CONDITIONAL execution edges)."
+    },
+    "CanSchedule": {
+      "category": "execution",
+      "relationship_kind": "EXECUTION",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Scheduler",
+        "EventRule",
+        "Workflow",
+        "AnalyticsService"
+      ],
+      "walkable": true,
+      "base_weight": 2,
+      "high_value": false,
+      "doc": "Source can create a schedule/trigger to drive execution (persistence + trigger creation)."
+    },
+    "CanReadSecret": {
+      "category": "credential",
+      "relationship_kind": "CREDENTIAL",
+      "nature": "both",
+      "source": [
+        "Identity",
+        "Compute"
+      ],
+      "target": [
+        "Secret",
+        "ConnectionString",
+        "Password",
+        "APIKey",
+        "Certificate",
+        "ApplicationPlatform"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source can read secret material (often yields creds for another identity/service)."
+    },
+    "CanReadCredential": {
+      "category": "credential",
+      "relationship_kind": "CREDENTIAL",
+      "nature": "both",
+      "source": [
+        "Identity",
+        "Compute"
+      ],
+      "target": [
+        "Credential",
+        "AccessKey",
+        "Token",
+        "SSHKey"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Source can obtain a usable credential (instance metadata token, env var, key file)."
+    },
+    "CanDecrypt": {
+      "category": "credential",
+      "relationship_kind": "CREDENTIAL",
+      "nature": "explicit",
+      "source": [
+        "Identity",
+        "Compute"
+      ],
+      "target": [
+        "EncryptionKey"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source can use a key to decrypt data/secrets (gates CanReadData on encrypted stores)."
+    },
+    "CanExportKey": {
+      "category": "credential",
+      "relationship_kind": "CREDENTIAL",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "EncryptionKey",
+        "SigningKey",
+        "Certificate"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Source can export raw key material (rare; high impact \u2014 persistent offline decrypt/sign)."
+    },
+    "CanCreateKey": {
+      "category": "credential",
+      "relationship_kind": "CREDENTIAL",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "EncryptionKey",
+        "ServiceAccount"
+      ],
+      "walkable": true,
+      "base_weight": 2,
+      "high_value": false,
+      "doc": "Source can create keys (SA key creation overlaps CanCreateCredentialFor)."
+    },
+    "CanSignAs": {
+      "category": "credential",
+      "relationship_kind": "CREDENTIAL",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "SigningKey",
+        "ServiceAccount",
+        "ApplicationIdentity",
+        "EncryptionKey"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source can sign tokens/blobs as the target (JWT/SAML signing -> forge identity)."
+    },
+    "CanRetrieveToken": {
+      "category": "credential",
+      "relationship_kind": "CREDENTIAL",
+      "nature": "both",
+      "source": [
+        "Identity",
+        "Compute",
+        "WorkloadIdentity"
+      ],
+      "target": [
+        "Token",
+        "Identity"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Source can obtain an access/OIDC token for an identity (metadata endpoint, token mint)."
+    },
+    "ExposesCredential": {
+      "category": "credential",
+      "relationship_kind": "CREDENTIAL",
+      "nature": "derived",
+      "source": [
+        "Compute",
+        "Storage",
+        "Data",
+        "Messaging",
+        "Secret",
+        "Cache"
+      ],
+      "target": [
+        "Credential",
+        "Identity",
+        "Secret"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Resource contains/leaks a credential usable for the target identity (env var, code, connstring, metadata, API key). Target can be a Credential, Identity, or Secret/APIKey node."
+    },
+    "CredentialsFor": {
+      "category": "credential",
+      "relationship_kind": "CREDENTIAL",
+      "nature": "explicit",
+      "source": [
+        "Secret",
+        "Credential",
+        "AccessKey",
+        "Token",
+        "Certificate"
+      ],
+      "target": [
+        "Identity",
+        "Data",
+        "ServiceIdentity"
+      ],
+      "walkable": true,
+      "base_weight": 0,
+      "high_value": true,
+      "doc": "This secret/credential authenticates as the target. Zero-cost link completing credential chains."
+    },
+    "CanRead": {
+      "category": "resource_control",
+      "relationship_kind": "CONTROL",
+      "nature": "both",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "*"
+      ],
+      "walkable": true,
+      "base_weight": 2,
+      "high_value": false,
+      "doc": "Read configuration/metadata of a resource (recon; low base value). Produced by explicit normalization (configuration-read IAM permissions) and by derived rules (recon primitives like reading Macie findings to identify sensitive-data targets)."
+    },
+    "CanWrite": {
+      "category": "resource_control",
+      "relationship_kind": "CONTROL",
+      "nature": "both",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "*"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Modify a resource's configuration. Produced by explicit normalization (write permissions) and derived rules (config-write attack paths)."
+    },
+    "CanDelete": {
+      "category": "resource_control",
+      "relationship_kind": "CONTROL",
+      "nature": "both",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "*"
+      ],
+      "walkable": false,
+      "base_weight": null,
+      "high_value": false,
+      "doc": "Destructive; persistence/impact not escalation. Excluded from default paths. Produced by explicit normalization (delete-permission IAM actions) and by derived rules (evasion/cover-tracks primitives like disabling detective services)."
+    },
+    "CanModify": {
+      "category": "resource_control",
+      "relationship_kind": "CONTROL",
+      "nature": "both",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "*"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "General modify capability (specialized by CanModifyCode/Configuration/Policy where meaningful). Produced by explicit normalization (modify permissions) and derived rules (config-modification attack paths like CloudTrail tampering, logging-service disablement)."
+    },
+    "CanAdminister": {
+      "category": "resource_control",
+      "relationship_kind": "CONTROL",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "*"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Full control (admin/owner) over a resource \u2014 implies most other capabilities on it."
+    },
+    "CanTakeOwnership": {
+      "category": "resource_control",
+      "relationship_kind": "CONTROL",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "*",
+        "ApplicationIdentity"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Source can become owner (Azure SP/app owner, resource owner) and thereby self-grant control."
+    },
+    "CanControl": {
+      "category": "resource_control",
+      "relationship_kind": "CONTROL",
+      "nature": "derived",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "*"
+      ],
+      "walkable": true,
+      "base_weight": 0,
+      "high_value": true,
+      "doc": "Derived summary: source effectively controls target (admin OR sufficient sub-capabilities)."
+    },
+    "CanCreate": {
+      "category": "resource_control",
+      "relationship_kind": "CONTROL",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "AdministrativeBoundary",
+        "*"
+      ],
+      "walkable": true,
+      "base_weight": 2,
+      "high_value": false,
+      "doc": "Source can create new resources of a type within a scope."
+    },
+    "CanReplace": {
+      "category": "resource_control",
+      "relationship_kind": "CONTROL",
+      "nature": "explicit",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "*"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Delete+recreate to inherit name/identity/trust (config-drift escalation)."
+    },
+    "CanNetworkReach": {
+      "category": "network",
+      "relationship_kind": "NETWORK",
+      "nature": "derived",
+      "source": [
+        "Compute",
+        "Network",
+        "Identity",
+        "Messaging"
+      ],
+      "target": [
+        "Compute",
+        "Data",
+        "Network",
+        "PrivateEndpoint",
+        "Storage",
+        "Messaging"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Source can reach target over the network (post SG/firewall/route evaluation). Messaging source/target covers publicly- or privately-reachable messaging endpoints (a queue/topic/event-bus with a public resource policy is an internet-reachable target; a private messaging endpoint is a private-link source/target) \u2014 consistent with ExposedToInternet and PrivateReachability, which already admit the Messaging class."
+    },
+    "CanReachPort": {
+      "category": "network",
+      "relationship_kind": "NETWORK",
+      "nature": "derived",
+      "source": [
+        "Compute",
+        "Network"
+      ],
+      "target": [
+        "Compute",
+        "Data",
+        "Network"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Reachability to a specific service port (gates exploitation of a listening service)."
+    },
+    "RoutesTo": {
+      "category": "network",
+      "relationship_kind": "NETWORK",
+      "nature": "explicit",
+      "source": [
+        "Route",
+        "Subnet",
+        "TransitGateway"
+      ],
+      "target": [
+        "Network",
+        "Subnet"
+      ],
+      "walkable": false,
+      "base_weight": null,
+      "high_value": false,
+      "doc": "Routing fact feeding CanNetworkReach derivation."
+    },
+    "PeeredWith": {
+      "category": "network",
+      "relationship_kind": "NETWORK",
+      "nature": "explicit",
+      "source": [
+        "VirtualNetwork"
+      ],
+      "target": [
+        "VirtualNetwork"
+      ],
+      "walkable": false,
+      "base_weight": null,
+      "high_value": false,
+      "doc": "Network peering \u2014 expands reachability across VPCs/VNets/accounts."
+    },
+    "ExposedToInternet": {
+      "category": "network",
+      "relationship_kind": "NETWORK",
+      "nature": "derived",
+      "source": [
+        "Compute",
+        "Data",
+        "PublicEndpoint",
+        "LoadBalancer",
+        "Storage",
+        "Messaging",
+        "DNS"
+      ],
+      "target": [
+        "AnonymousIdentity"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Target is reachable/abusable from the public internet \u2014 common attack entry point (incl. a queue/topic/API with a public/wildcard resource policy)."
+    },
+    "ExposedToTenant": {
+      "category": "network",
+      "relationship_kind": "NETWORK",
+      "nature": "derived",
+      "source": [
+        "*"
+      ],
+      "target": [
+        "Tenant",
+        "Organization"
+      ],
+      "walkable": true,
+      "base_weight": 2,
+      "high_value": false,
+      "doc": "Reachable/usable by any principal in the tenant/org (broad blast radius)."
+    },
+    "ExposedToAccount": {
+      "category": "network",
+      "relationship_kind": "NETWORK",
+      "nature": "derived",
+      "source": [
+        "*"
+      ],
+      "target": [
+        "Account",
+        "Subscription",
+        "Project"
+      ],
+      "walkable": true,
+      "base_weight": 2,
+      "high_value": false,
+      "doc": "Reachable/usable account/subscription/project-wide."
+    },
+    "PrivateReachability": {
+      "category": "network",
+      "relationship_kind": "NETWORK",
+      "nature": "derived",
+      "source": [
+        "Compute",
+        "Messaging",
+        "Network"
+      ],
+      "target": [
+        "Data",
+        "PrivateEndpoint",
+        "Compute",
+        "Storage"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Reachable only via private networking (PrivateLink/PE/PSC) \u2014 needs a foothold in-network. Includes private APIs and messaging endpoints accessible only via interface endpoints, and object storage reached via a private/gateway endpoint (Azure Blob/Files PE, GCS via PSC). Network sources cover the endpoint/distribution itself acting as the reachability actor (e.g. a CloudFront distribution's OAC/OAI reaching a private S3 origin, or a Private Endpoint node)."
+    },
+    "CanReadData": {
+      "category": "data",
+      "relationship_kind": "CONTROL",
+      "nature": "derived",
+      "source": [
+        "Identity",
+        "Compute"
+      ],
+      "target": [
+        "Storage",
+        "Data",
+        "Messaging",
+        "ApplicationPlatform"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Effective data-plane read (control-plane perm + network reach + decrypt if encrypted). Includes reading messages from a queue/topic/stream."
+    },
+    "CanWriteData": {
+      "category": "data",
+      "relationship_kind": "CONTROL",
+      "nature": "derived",
+      "source": [
+        "Identity",
+        "Compute"
+      ],
+      "target": [
+        "Storage",
+        "Data",
+        "Messaging"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Effective data-plane write (can poison code/artifacts/config \u2192 onward execution). Includes publishing/sending to a queue/topic/event bus."
+    },
+    "CanDeleteData": {
+      "category": "data",
+      "relationship_kind": "CONTROL",
+      "nature": "derived",
+      "source": [
+        "Identity",
+        "Compute"
+      ],
+      "target": [
+        "Storage",
+        "Data"
+      ],
+      "walkable": false,
+      "base_weight": null,
+      "high_value": false,
+      "doc": "Destructive impact; not escalation."
+    },
+    "CanExfiltrate": {
+      "category": "data",
+      "relationship_kind": "CONTROL",
+      "nature": "derived",
+      "source": [
+        "Identity",
+        "Compute"
+      ],
+      "target": [
+        "Storage",
+        "Data",
+        "Snapshot"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Can move data out of boundary (share snapshot cross-account, presign URL, replicate)."
+    },
+    "ContainsSecret": {
+      "category": "data",
+      "relationship_kind": "CREDENTIAL",
+      "nature": "explicit",
+      "source": [
+        "Storage",
+        "Data",
+        "Compute",
+        "Messaging"
+      ],
+      "target": [
+        "Secret",
+        "Credential"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Resource stores secret material (drives ExposesCredential)."
+    },
+    "ContainsCredential": {
+      "category": "data",
+      "relationship_kind": "CREDENTIAL",
+      "nature": "explicit",
+      "source": [
+        "Storage",
+        "Data",
+        "Compute",
+        "Messaging"
+      ],
+      "target": [
+        "Credential",
+        "AccessKey",
+        "Token"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Resource stores a usable credential. Includes hardcoded credentials in workflow definitions, SAS keys in message connectors, and API keys in event subscriptions."
+    },
+    "ContainsResourceReference": {
+      "category": "data",
+      "relationship_kind": "STRUCTURAL",
+      "nature": "explicit",
+      "source": [
+        "Data",
+        "Storage",
+        "Compute",
+        "Network"
+      ],
+      "target": [
+        "*"
+      ],
+      "walkable": false,
+      "base_weight": null,
+      "high_value": false,
+      "doc": "Recon: resource references another (connection targets, IaC). Aids collection, not traversal. Network sources (e.g., Route 53 DNS zones) reference alias targets like ELB/CloudFront/S3; dangling aliases are a legitimate structural relationship."
+    },
+    "CanEnterAccount": {
+      "category": "cross_boundary",
+      "relationship_kind": "CONTROL",
+      "nature": "derived",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Account"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source can obtain a principal/session inside the target AWS account."
+    },
+    "CanEnterSubscription": {
+      "category": "cross_boundary",
+      "relationship_kind": "CONTROL",
+      "nature": "derived",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Subscription"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source can gain control-plane access within the target subscription."
+    },
+    "CanEnterProject": {
+      "category": "cross_boundary",
+      "relationship_kind": "CONTROL",
+      "nature": "derived",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Project"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source can gain access within the target GCP project."
+    },
+    "CanEnterTenant": {
+      "category": "cross_boundary",
+      "relationship_kind": "CONTROL",
+      "nature": "derived",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Tenant"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source can obtain a principal in the target Entra tenant (guest, multi-tenant app, B2B)."
+    },
+    "CanEnterOrganization": {
+      "category": "cross_boundary",
+      "relationship_kind": "CONTROL",
+      "nature": "derived",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Organization"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Source reaches org-level control (management account, org policy admin)."
+    },
+    "CrossAccountTrust": {
+      "category": "cross_boundary",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "both",
+      "source": [
+        "Account",
+        "Role",
+        "ResourcePolicy",
+        "Data",
+        "Snapshot",
+        "DataLake",
+        "Storage"
+      ],
+      "target": [
+        "Account",
+        "ExternalIdentity",
+        "Subscription",
+        "AnonymousIdentity"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "A trust/resource policy names a principal in another account (feeds CanAssume/CanEnterAccount). Produced by explicit normalization (policy artifact parsing) and by derived rules (cross-account data-resource sharing patterns like S3 bucket policy with foreign principal). Subscription targets cover Azure's account-boundary analog \u2014 a cross-subscription trust (e.g. an approved cross-subscription Private Endpoint connection, or cross-subscription VNet peering)."
+    },
+    "CrossTenantTrust": {
+      "category": "cross_boundary",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "explicit",
+      "source": [
+        "Tenant",
+        "ApplicationIdentity"
+      ],
+      "target": [
+        "Tenant",
+        "ExternalIdentity"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "B2B/guest/multi-tenant app trust across Entra tenants."
+    },
+    "CrossProjectTrust": {
+      "category": "cross_boundary",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "explicit",
+      "source": [
+        "Project",
+        "ServiceAccount",
+        "ResourcePolicy",
+        "Snapshot"
+      ],
+      "target": [
+        "Project",
+        "ExternalIdentity",
+        "ServiceAccount"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Cross-project IAM binding / SA usage. ServiceAccount targets cover a workload in one project running as (trusting) a service account owned by another project (e.g. a Vertex AI job or Workbench instance with a cross-project runtime SA) \u2014 symmetric with ServiceAccount as a source."
+    },
+    "FederatesTo": {
+      "category": "cross_boundary",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "explicit",
+      "source": [
+        "Identity",
+        "ApplicationIdentity",
+        "WorkloadIdentity"
+      ],
+      "target": [
+        "Identity",
+        "Role",
+        "ServiceAccount"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": true,
+      "doc": "Identity in provider A is trusted to obtain an identity in provider B (OIDC/SAML/WIF). Enables cross-cloud paths."
+    },
+    "CredentialValidFor": {
+      "category": "cross_boundary",
+      "relationship_kind": "CREDENTIAL",
+      "nature": "explicit",
+      "source": [
+        "Secret",
+        "Credential",
+        "Token"
+      ],
+      "target": [
+        "Identity",
+        "ServiceIdentity"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "A credential harvested in one environment authenticates to another (cross-cloud/SaaS)."
+    },
+    "AuthenticatesTo": {
+      "category": "cross_boundary",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "explicit",
+      "source": [
+        "Identity",
+        "Credential"
+      ],
+      "target": [
+        "*",
+        "Data",
+        "API"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Credential/identity authenticates to a service/endpoint (incl. SaaS/DB)."
+    },
+    "TrustsExternalIdentity": {
+      "category": "cross_boundary",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "explicit",
+      "source": [
+        "Role",
+        "ServiceAccount",
+        "ApplicationIdentity",
+        "ManagedIdentity",
+        "ResourcePolicy",
+        "TrustPolicy",
+        "GenericPolicy"
+      ],
+      "target": [
+        "ExternalIdentity",
+        "FederatedIdentity",
+        "WorkloadIdentity"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "Target trusts an external/federated/workload principal \u2014 inbound cross-boundary access (incl. k8s IRSA/WI federation). Source can be an identity (principal), a resource policy, or a policy document (e.g., B2C trust policy) that declares the trust."
+    },
+    "ExternalIdentityMapsTo": {
+      "category": "cross_boundary",
+      "relationship_kind": "AUTHORIZATION",
+      "nature": "explicit",
+      "source": [
+        "ExternalIdentity",
+        "FederatedIdentity",
+        "WorkloadIdentity"
+      ],
+      "target": [
+        "Identity",
+        "Role",
+        "ServiceAccount"
+      ],
+      "walkable": true,
+      "base_weight": 1,
+      "high_value": false,
+      "doc": "An external/workload identity resolves to a concrete internal principal (guest->member, IdP subject->role, k8s SA->IAM role)."
+    },
+    "Controls": {
+      "category": "derived",
+      "relationship_kind": "DERIVED_ATTACK_PATH",
+      "nature": "derived",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "AdministrativeBoundary",
+        "*"
+      ],
+      "walkable": true,
+      "base_weight": 0,
+      "high_value": true,
+      "doc": "Terminal control edge: source can administer the target boundary/resource (objective attainment)."
+    },
+    "CanEscalateTo": {
+      "category": "derived",
+      "relationship_kind": "DERIVED_ATTACK_PATH",
+      "nature": "derived",
+      "source": [
+        "Identity"
+      ],
+      "target": [
+        "Identity"
+      ],
+      "walkable": true,
+      "base_weight": 0,
+      "high_value": true,
+      "doc": "Derived: source can become an identity with strictly greater privilege (rolls up an escalation chain)."
+    }
+  }
+}

@@ -1,0 +1,1755 @@
+{
+  "$comment": "RAGE provider registry (AZURE) \u2014 every native resource type, its RAGE node_type (the mapping), and the collection recipe a conforming RAGE Collector uses to enumerate it (enumerate op, id/arn fields, detail-enrichment chain, required permissions). services[] gives the service-level rollup.",
+  "spec_version": "0.1",
+  "provider": "azure",
+  "services": {
+    "azure:aci": {
+      "name": "Container Instances",
+      "generic_types": [
+        "ContainerService"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:aks": {
+      "name": "AKS",
+      "generic_types": [
+        "KubernetesCluster"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:apim": {
+      "name": "apim",
+      "generic_types": [
+        "APIGateway"
+      ],
+      "attack_relevance": "inventory"
+    },
+    "azure:app": {
+      "name": "Container Apps",
+      "generic_types": [
+        "ContainerService"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:appconfig": {
+      "name": "App Configuration",
+      "generic_types": [
+        "Secret"
+      ],
+      "attack_relevance": "medium"
+    },
+    "azure:arm-deployments": {
+      "name": "ARM/Bicep Deployments",
+      "generic_types": [
+        "AutomationService"
+      ],
+      "attack_relevance": "high",
+      "collected": false
+    },
+    "azure:automation": {
+      "name": "Azure Automation",
+      "generic_types": [
+        "AutomationService"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:b2c": {
+      "name": "Azure AD B2C",
+      "generic_types": [
+        "FederatedIdentity"
+      ],
+      "attack_relevance": "medium",
+      "collected": false
+    },
+    "azure:batch": {
+      "name": "Azure Batch",
+      "generic_types": [
+        "BatchJob"
+      ],
+      "attack_relevance": "medium"
+    },
+    "azure:blueprints": {
+      "name": "Blueprints/Deployment Stacks",
+      "generic_types": [
+        "AutomationService"
+      ],
+      "attack_relevance": "medium",
+      "collected": false
+    },
+    "azure:cache": {
+      "name": "Cache for Redis",
+      "generic_types": [
+        "Cache"
+      ],
+      "attack_relevance": "medium"
+    },
+    "azure:cdn": {
+      "name": "cdn",
+      "generic_types": [
+        "LoadBalancer"
+      ],
+      "attack_relevance": "inventory"
+    },
+    "azure:cognitiveservices": {
+      "name": "Azure OpenAI / AI Services",
+      "generic_types": [
+        "AnalyticsService"
+      ],
+      "attack_relevance": "low"
+    },
+    "azure:compute": {
+      "name": "VM Scale Sets",
+      "generic_types": [
+        "BlockStorage",
+        "Snapshot",
+        "VirtualMachine"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:containerregistry": {
+      "name": "Container Registry",
+      "generic_types": [
+        "ContainerRegistry"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:databricks": {
+      "name": "Azure Databricks",
+      "generic_types": [
+        "AnalyticsService"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:datafactory": {
+      "name": "Data Factory",
+      "generic_types": [
+        "AutomationService"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:datalake": {
+      "name": "Data Lake Storage Gen2",
+      "generic_types": [
+        "DataLake"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:defender": {
+      "name": "Defender for Cloud",
+      "generic_types": [
+        "SecurityService"
+      ],
+      "attack_relevance": "high",
+      "collected": false
+    },
+    "azure:devops": {
+      "name": "Azure DevOps",
+      "generic_types": [
+        "BuildWorker",
+        "ArtifactRepository"
+      ],
+      "attack_relevance": "high",
+      "collected": false
+    },
+    "azure:dns": {
+      "name": "Azure DNS / Private DNS",
+      "generic_types": [
+        "DNS"
+      ],
+      "attack_relevance": "medium",
+      "collected": false
+    },
+    "azure:documentdb": {
+      "name": "Cosmos DB",
+      "generic_types": [
+        "NoSQLDatabase"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:entra": {
+      "name": "Entra ID",
+      "generic_types": [
+        "ApplicationIdentity",
+        "Group",
+        "HumanIdentity"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:eventgrid": {
+      "name": "Event Grid",
+      "generic_types": [
+        "Topic"
+      ],
+      "attack_relevance": "medium"
+    },
+    "azure:eventhub": {
+      "name": "Event Hubs",
+      "generic_types": [
+        "EventBus"
+      ],
+      "attack_relevance": "low"
+    },
+    "azure:frontdoor": {
+      "name": "Front Door / CDN",
+      "generic_types": [
+        "PublicEndpoint"
+      ],
+      "attack_relevance": "medium",
+      "collected": false
+    },
+    "azure:hdinsight": {
+      "name": "hdinsight",
+      "generic_types": [
+        "AnalyticsService"
+      ],
+      "attack_relevance": "inventory"
+    },
+    "azure:keyvault": {
+      "name": "Managed HSM",
+      "generic_types": [
+        "EncryptionKey",
+        "Secret"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:kusto": {
+      "name": "kusto",
+      "generic_types": [
+        "AnalyticsService"
+      ],
+      "attack_relevance": "inventory"
+    },
+    "azure:lighthouse": {
+      "name": "Azure Lighthouse",
+      "generic_types": [
+        "ExternalIdentity"
+      ],
+      "attack_relevance": "high",
+      "collected": false
+    },
+    "azure:loganalytics": {
+      "name": "Log Analytics / Sentinel",
+      "generic_types": [
+        "LoggingService",
+        "SecurityService"
+      ],
+      "attack_relevance": "medium",
+      "collected": false
+    },
+    "azure:logic": {
+      "name": "Logic Apps",
+      "generic_types": [
+        "Workflow"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:managedidentity": {
+      "name": "Managed Identities",
+      "generic_types": [
+        "ManagedIdentity"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:mariadb": {
+      "name": "mariadb",
+      "generic_types": [
+        "RelationalDatabase"
+      ],
+      "attack_relevance": "inventory"
+    },
+    "azure:mgmtgroups": {
+      "name": "Management Groups",
+      "generic_types": [
+        "ManagementGroup"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:ml": {
+      "name": "Azure ML",
+      "generic_types": [
+        "AnalyticsService"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:monitor": {
+      "name": "Azure Monitor / Activity Log",
+      "generic_types": [
+        "LoggingService"
+      ],
+      "attack_relevance": "high",
+      "collected": false
+    },
+    "azure:msgraph": {
+      "name": "Microsoft Graph (app perms)",
+      "generic_types": [
+        "ApplicationIdentity"
+      ],
+      "attack_relevance": "high",
+      "collected": false
+    },
+    "azure:mysql": {
+      "name": "mysql",
+      "generic_types": [
+        "RelationalDatabase"
+      ],
+      "attack_relevance": "inventory"
+    },
+    "azure:netapp": {
+      "name": "Azure NetApp Files",
+      "generic_types": [
+        "FileStorage"
+      ],
+      "attack_relevance": "low"
+    },
+    "azure:network": {
+      "name": "Azure Firewall",
+      "generic_types": [
+        "Firewall",
+        "LoadBalancer",
+        "NetworkInterface",
+        "PrivateEndpoint",
+        "Subnet",
+        "VirtualNetwork"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:notificationhubs": {
+      "name": "Notification Hubs",
+      "generic_types": [
+        "Topic"
+      ],
+      "attack_relevance": "low"
+    },
+    "azure:policy": {
+      "name": "Azure Policy",
+      "generic_types": [
+        "ConditionalPolicy",
+        "OrganizationPolicy"
+      ],
+      "attack_relevance": "medium",
+      "collected": false
+    },
+    "azure:postgresql": {
+      "name": "DB for PostgreSQL/MySQL",
+      "generic_types": [
+        "RelationalDatabase"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:privatelink": {
+      "name": "Private Link / Endpoints",
+      "generic_types": [
+        "PrivateEndpoint"
+      ],
+      "attack_relevance": "high",
+      "collected": false
+    },
+    "azure:purview": {
+      "name": "Microsoft Purview",
+      "generic_types": [
+        "AnalyticsService"
+      ],
+      "attack_relevance": "low"
+    },
+    "azure:rbac": {
+      "name": "Azure RBAC (Authorization)",
+      "generic_types": [
+        "Role",
+        "IAMPolicy",
+        "ConditionalPolicy"
+      ],
+      "attack_relevance": "high",
+      "collected": false
+    },
+    "azure:recoveryservices": {
+      "name": "recoveryservices",
+      "generic_types": [
+        "Backup"
+      ],
+      "attack_relevance": "inventory"
+    },
+    "azure:search": {
+      "name": "AI Search",
+      "generic_types": [
+        "SearchService"
+      ],
+      "attack_relevance": "medium"
+    },
+    "azure:servicebus": {
+      "name": "Service Bus",
+      "generic_types": [
+        "Queue"
+      ],
+      "attack_relevance": "medium"
+    },
+    "azure:servicefabric": {
+      "name": "Service Fabric",
+      "generic_types": [
+        "ContainerCluster"
+      ],
+      "attack_relevance": "medium"
+    },
+    "azure:signalr": {
+      "name": "signalr",
+      "generic_types": [
+        "GenericMessaging"
+      ],
+      "attack_relevance": "inventory"
+    },
+    "azure:sql": {
+      "name": "Azure SQL / SQL MI",
+      "generic_types": [
+        "RelationalDatabase"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:storage": {
+      "name": "Storage Accounts (Blob/File/Queue/Table)",
+      "generic_types": [
+        "ObjectStorage"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:streamanalytics": {
+      "name": "streamanalytics",
+      "generic_types": [
+        "AnalyticsService"
+      ],
+      "attack_relevance": "inventory"
+    },
+    "azure:subscription": {
+      "name": "subscription",
+      "generic_types": [
+        "ResourceGroup",
+        "Subscription"
+      ],
+      "attack_relevance": "medium"
+    },
+    "azure:subscriptions": {
+      "name": "Subscriptions/RG",
+      "generic_types": [
+        "Subscription",
+        "ResourceGroup"
+      ],
+      "attack_relevance": "high",
+      "collected": false
+    },
+    "azure:synapse": {
+      "name": "Synapse Analytics",
+      "generic_types": [
+        "AnalyticsService"
+      ],
+      "attack_relevance": "high"
+    },
+    "azure:vwan": {
+      "name": "Virtual WAN / ER / VPN",
+      "generic_types": [
+        "TransitGateway",
+        "VPN"
+      ],
+      "attack_relevance": "medium",
+      "collected": false
+    },
+    "azure:web": {
+      "name": "Azure Functions",
+      "generic_types": [
+        "ApplicationPlatform"
+      ],
+      "attack_relevance": "high"
+    }
+  },
+  "facts": [
+    {
+      "kind": "role_assignment",
+      "collect": {
+        "operation": "Microsoft.Authorization/roleAssignments (list)",
+        "over": "azure:subscription, azure:resourcegroup, any resource scope",
+        "scope": "subscription"
+      },
+      "backs": [
+        "HasRole",
+        "HasPermission"
+      ],
+      "required_permissions": [
+        "Microsoft.Authorization/roleAssignments/read"
+      ],
+      "note": "role assignments + role definitions evaluate into effective permissions backing the capability edges"
+    },
+    {
+      "kind": "role_definition",
+      "collect": {
+        "operation": "Microsoft.Authorization/roleDefinitions (list)",
+        "over": "azure:subscription",
+        "scope": "subscription"
+      },
+      "backs": [
+        "HasPermission"
+      ],
+      "required_permissions": [
+        "Microsoft.Authorization/roleDefinitions/read"
+      ]
+    },
+    {
+      "kind": "deny_assignment",
+      "collect": {
+        "operation": "Microsoft.Authorization/denyAssignments (list)",
+        "over": "azure:subscription",
+        "scope": "subscription"
+      },
+      "backs": [],
+      "required_permissions": [
+        "Microsoft.Authorization/denyAssignments/read"
+      ],
+      "note": "a guardrail: deny assignments block effective permissions (edge state BLOCKED)"
+    },
+    {
+      "kind": "mg_hierarchy",
+      "collect": {
+        "operation": "Microsoft.Management/managementGroups (list + descendants)",
+        "over": "azure:managementgroup",
+        "scope": "tenant"
+      },
+      "backs": [
+        "Contains",
+        "CanEnterSubscription",
+        "CanEnterTenant"
+      ],
+      "required_permissions": [
+        "Microsoft.Management/managementGroups/read"
+      ]
+    },
+    {
+      "kind": "entra_role_assignment",
+      "collect": {
+        "operation": "msgraph roleManagement.directory.roleAssignments + roleEligibilityScheduleInstances",
+        "over": "azure:entra:user, azure:entra:serviceprincipal, azure:entra:group",
+        "scope": "tenant"
+      },
+      "backs": [
+        "HasRole",
+        "CanGrantPermission"
+      ],
+      "required_permissions": [
+        "RoleManagement.Read.Directory"
+      ]
+    },
+    {
+      "kind": "entra_owner",
+      "collect": {
+        "operation": "msgraph owners (application/servicePrincipal/group owners)",
+        "over": "azure:entra:serviceprincipal, azure:entra:group",
+        "scope": "tenant"
+      },
+      "backs": [
+        "CanControl",
+        "CanCreateCredentialFor"
+      ],
+      "required_permissions": [
+        "Application.Read.All",
+        "Directory.Read.All"
+      ]
+    },
+    {
+      "kind": "entra_app_role",
+      "collect": {
+        "operation": "msgraph appRoleAssignments / oauth2PermissionGrants",
+        "over": "azure:entra:serviceprincipal",
+        "scope": "tenant"
+      },
+      "backs": [
+        "HasPermission",
+        "CanGrantPermission"
+      ],
+      "required_permissions": [
+        "Application.Read.All",
+        "Directory.Read.All"
+      ]
+    },
+    {
+      "kind": "membership",
+      "collect": {
+        "operation": "msgraph group members (transitiveMembers)",
+        "over": "azure:entra:group",
+        "scope": "tenant"
+      },
+      "backs": [
+        "MemberOf"
+      ],
+      "required_permissions": [
+        "GroupMember.Read.All"
+      ]
+    },
+    {
+      "kind": "resource_policy",
+      "collect": {
+        "operation": "Key Vault access policies / storage account public access / resource-scope role assignments",
+        "over": "azure:keyvault:vault, azure:storage:account",
+        "scope": "subscription"
+      },
+      "backs": [
+        "HasPolicy",
+        "CanReadSecret",
+        "CanDecrypt",
+        "ExposedToInternet"
+      ],
+      "required_permissions": [
+        "Microsoft.KeyVault/vaults/read",
+        "Microsoft.Storage/storageAccounts/read"
+      ]
+    }
+  ],
+  "resources": {
+    "azure:aci:containergroup": {
+      "node_type": "ContainerService",
+      "service": "azure:aci",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.containerinstance/containergroups",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.ContainerInstance/containergroups/read"
+      ]
+    },
+    "azure:aks:cluster": {
+      "node_type": "KubernetesCluster",
+      "service": "azure:aks",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.containerservice/managedclusters",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.ContainerService/managedclusters/read"
+      ]
+    },
+    "azure:apim:service": {
+      "node_type": "APIGateway",
+      "service": "azure:apim",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.apimanagement/service",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.ApiManagement/service/read"
+      ]
+    },
+    "azure:app:containerapp": {
+      "node_type": "ContainerService",
+      "service": "azure:app",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.app/containerapps",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.App/containerapps/read"
+      ]
+    },
+    "azure:appconfig:store": {
+      "node_type": "Secret",
+      "service": "azure:appconfig",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.appconfiguration/configurationstores",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.AppConfiguration/configurationstores/read"
+      ]
+    },
+    "azure:automation:account": {
+      "node_type": "AutomationService",
+      "service": "azure:automation",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.automation/automationaccounts",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Automation/automationaccounts/read"
+      ]
+    },
+    "azure:batch:account": {
+      "node_type": "BatchJob",
+      "service": "azure:batch",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.batch/batchaccounts",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Batch/batchaccounts/read"
+      ]
+    },
+    "azure:cache:redis": {
+      "node_type": "Cache",
+      "service": "azure:cache",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.cache/redis",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Cache/redis/read"
+      ]
+    },
+    "azure:cdn:profile": {
+      "node_type": "LoadBalancer",
+      "service": "azure:cdn",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.cdn/profiles",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Cdn/profiles/read"
+      ]
+    },
+    "azure:cognitiveservices:account": {
+      "node_type": "AnalyticsService",
+      "service": "azure:cognitiveservices",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.cognitiveservices/accounts",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.CognitiveServices/accounts/read"
+      ]
+    },
+    "azure:compute:disk": {
+      "node_type": "BlockStorage",
+      "service": "azure:compute",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.compute/disks",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Compute/disks/read"
+      ]
+    },
+    "azure:compute:snapshot": {
+      "node_type": "Snapshot",
+      "service": "azure:compute",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.compute/snapshots",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Compute/snapshots/read"
+      ]
+    },
+    "azure:compute:vm": {
+      "node_type": "VirtualMachine",
+      "service": "azure:compute",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.compute/virtualmachines",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Compute/virtualmachines/read"
+      ]
+    },
+    "azure:compute:vmss": {
+      "node_type": "VirtualMachine",
+      "service": "azure:compute",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.compute/virtualmachinescalesets",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Compute/virtualmachinescalesets/read"
+      ]
+    },
+    "azure:containerregistry:registry": {
+      "node_type": "ContainerRegistry",
+      "service": "azure:containerregistry",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.containerregistry/registries",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.ContainerRegistry/registries/read"
+      ]
+    },
+    "azure:databricks:workspace": {
+      "node_type": "AnalyticsService",
+      "service": "azure:databricks",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.databricks/workspaces",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Databricks/workspaces/read"
+      ]
+    },
+    "azure:datafactory:factory": {
+      "node_type": "AutomationService",
+      "service": "azure:datafactory",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.datafactory/factories",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.DataFactory/factories/read"
+      ]
+    },
+    "azure:datalake:store": {
+      "node_type": "DataLake",
+      "service": "azure:datalake",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.datalakestore/accounts",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.DataLakeStore/accounts/read"
+      ]
+    },
+    "azure:documentdb:cosmos": {
+      "node_type": "NoSQLDatabase",
+      "service": "azure:documentdb",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.documentdb/databaseaccounts",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.DocumentDB/databaseaccounts/read"
+      ]
+    },
+    "azure:entra:group": {
+      "node_type": "Group",
+      "service": "azure:entra",
+      "scope": "global",
+      "enumerate": {
+        "operation": "msgraph:groups.list",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "Group.Read.All"
+      ]
+    },
+    "azure:entra:serviceprincipal": {
+      "node_type": "ApplicationIdentity",
+      "service": "azure:entra",
+      "scope": "global",
+      "enumerate": {
+        "operation": "msgraph:servicePrincipals.list",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "Application.Read.All"
+      ]
+    },
+    "azure:entra:user": {
+      "node_type": "HumanIdentity",
+      "service": "azure:entra",
+      "scope": "global",
+      "enumerate": {
+        "operation": "msgraph:users.list",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "User.Read.All"
+      ]
+    },
+    "azure:eventgrid:topic": {
+      "node_type": "Topic",
+      "service": "azure:eventgrid",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.eventgrid/topics",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.EventGrid/topics/read"
+      ]
+    },
+    "azure:eventhub:namespace": {
+      "node_type": "EventBus",
+      "service": "azure:eventhub",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.eventhub/namespaces",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.EventHub/namespaces/read"
+      ]
+    },
+    "azure:hdinsight:cluster": {
+      "node_type": "AnalyticsService",
+      "service": "azure:hdinsight",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.hdinsight/clusters",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.HDInsight/clusters/read"
+      ]
+    },
+    "azure:keyvault:managedhsm": {
+      "node_type": "EncryptionKey",
+      "service": "azure:keyvault",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.keyvault/managedhsms",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.KeyVault/managedhsms/read"
+      ]
+    },
+    "azure:keyvault:vault": {
+      "node_type": "Secret",
+      "service": "azure:keyvault",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.keyvault/vaults",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.KeyVault/vaults/read"
+      ]
+    },
+    "azure:kusto:cluster": {
+      "node_type": "AnalyticsService",
+      "service": "azure:kusto",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.kusto/clusters",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Kusto/clusters/read"
+      ]
+    },
+    "azure:logic:workflow": {
+      "node_type": "Workflow",
+      "service": "azure:logic",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.logic/workflows",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Logic/workflows/read"
+      ]
+    },
+    "azure:managedidentity:userassigned": {
+      "node_type": "ManagedIdentity",
+      "service": "azure:managedidentity",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.managedidentity/userassignedidentities",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.ManagedIdentity/userassignedidentities/read"
+      ]
+    },
+    "azure:management:managementgroup": {
+      "node_type": "ManagementGroup",
+      "service": "azure:mgmtgroups",
+      "scope": "tenant",
+      "enumerate": {
+        "operation": "Microsoft.Management/managementGroups (list)",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "Microsoft.Management/managementGroups/read"
+      ]
+    },
+    "azure:mariadb:server": {
+      "node_type": "RelationalDatabase",
+      "service": "azure:mariadb",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.dbformariadb/servers",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.DBforMariaDB/servers/read"
+      ]
+    },
+    "azure:ml:workspace": {
+      "node_type": "AnalyticsService",
+      "service": "azure:ml",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.machinelearningservices/workspaces",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.MachineLearningServices/workspaces/read"
+      ]
+    },
+    "azure:mysql:flexibleserver": {
+      "node_type": "RelationalDatabase",
+      "service": "azure:mysql",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.dbformysql/flexibleservers",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.DBforMySQL/flexibleservers/read"
+      ]
+    },
+    "azure:netapp:account": {
+      "node_type": "FileStorage",
+      "service": "azure:netapp",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.netapp/netappaccounts",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.NetApp/netappaccounts/read"
+      ]
+    },
+    "azure:network:appgateway": {
+      "node_type": "LoadBalancer",
+      "service": "azure:network",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.network/applicationgateways",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Network/applicationgateways/read"
+      ]
+    },
+    "azure:network:firewall": {
+      "node_type": "Firewall",
+      "service": "azure:network",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.network/azurefirewalls",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Network/azurefirewalls/read"
+      ]
+    },
+    "azure:network:loadbalancer": {
+      "node_type": "LoadBalancer",
+      "service": "azure:network",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.network/loadbalancers",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Network/loadbalancers/read"
+      ]
+    },
+    "azure:network:nic": {
+      "node_type": "NetworkInterface",
+      "service": "azure:network",
+      "scope": "region",
+      "enumerate": {
+        "operation": "arg:microsoft.network/networkinterfaces",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "Microsoft.Network/networkInterfaces/read"
+      ]
+    },
+    "azure:network:nsg": {
+      "node_type": "Firewall",
+      "service": "azure:network",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.network/networksecuritygroups",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Network/networksecuritygroups/read"
+      ]
+    },
+    "azure:network:privateendpoint": {
+      "node_type": "PrivateEndpoint",
+      "service": "azure:network",
+      "scope": "region",
+      "enumerate": {
+        "operation": "arg:microsoft.network/privateendpoints",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "Microsoft.Network/privateEndpoints/read"
+      ]
+    },
+    "azure:network:subnet": {
+      "node_type": "Subnet",
+      "service": "azure:network",
+      "scope": "region",
+      "enumerate": {
+        "operation": "arg:microsoft.network/virtualnetworks/subnets",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "Microsoft.Network/virtualNetworks/subnets/read"
+      ]
+    },
+    "azure:network:vnet": {
+      "node_type": "VirtualNetwork",
+      "service": "azure:network",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.network/virtualnetworks",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Network/virtualnetworks/read"
+      ]
+    },
+    "azure:notificationhubs:namespace": {
+      "node_type": "Topic",
+      "service": "azure:notificationhubs",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.notificationhubs/namespaces",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.NotificationHubs/namespaces/read"
+      ]
+    },
+    "azure:postgresql:flexibleserver": {
+      "node_type": "RelationalDatabase",
+      "service": "azure:postgresql",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.dbforpostgresql/flexibleservers",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.DBforPostgreSQL/flexibleservers/read"
+      ]
+    },
+    "azure:postgresql:server": {
+      "node_type": "RelationalDatabase",
+      "service": "azure:postgresql",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.dbforpostgresql/servers",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.DBforPostgreSQL/flexibleServers/read"
+      ]
+    },
+    "azure:purview:account": {
+      "node_type": "AnalyticsService",
+      "service": "azure:purview",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.purview/accounts",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Purview/accounts/read"
+      ]
+    },
+    "azure:recoveryservices:vault": {
+      "node_type": "Backup",
+      "service": "azure:recoveryservices",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.recoveryservices/vaults",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.RecoveryServices/vaults/read"
+      ]
+    },
+    "azure:resources:resourcegroup": {
+      "node_type": "ResourceGroup",
+      "service": "azure:subscription",
+      "scope": "subscription",
+      "enumerate": {
+        "operation": "Microsoft.Resources/subscriptions/resourceGroups (list)",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "Microsoft.Resources/subscriptions/resourceGroups/read"
+      ]
+    },
+    "azure:resources:subscription": {
+      "node_type": "Subscription",
+      "service": "azure:subscription",
+      "scope": "tenant",
+      "enumerate": {
+        "operation": "Microsoft.Resources/subscriptions (list)",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "Microsoft.Resources/subscriptions/read"
+      ]
+    },
+    "azure:search:service": {
+      "node_type": "SearchService",
+      "service": "azure:search",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.search/searchservices",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Search/searchservices/read"
+      ]
+    },
+    "azure:servicebus:namespace": {
+      "node_type": "Queue",
+      "service": "azure:servicebus",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.servicebus/namespaces",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.ServiceBus/namespaces/read"
+      ]
+    },
+    "azure:servicefabric:cluster": {
+      "node_type": "ContainerCluster",
+      "service": "azure:servicefabric",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.servicefabric/clusters",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.ServiceFabric/clusters/read"
+      ]
+    },
+    "azure:signalr:service": {
+      "node_type": "GenericMessaging",
+      "service": "azure:signalr",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.signalrservice/signalr",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.SignalRService/signalr/read"
+      ]
+    },
+    "azure:sql:server": {
+      "node_type": "RelationalDatabase",
+      "service": "azure:sql",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.sql/servers",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Sql/servers/read"
+      ]
+    },
+    "azure:storage:account": {
+      "node_type": "ObjectStorage",
+      "service": "azure:storage",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.storage/storageaccounts",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Storage/storageaccounts/read"
+      ]
+    },
+    "azure:streamanalytics:job": {
+      "node_type": "AnalyticsService",
+      "service": "azure:streamanalytics",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.streamanalytics/streamingjobs",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.StreamAnalytics/streamingjobs/read"
+      ]
+    },
+    "azure:synapse:workspace": {
+      "node_type": "AnalyticsService",
+      "service": "azure:synapse",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.synapse/workspaces",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Synapse/workspaces/read"
+      ]
+    },
+    "azure:web:site": {
+      "node_type": "ApplicationPlatform",
+      "service": "azure:web",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.web/sites",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity",
+          "kind"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Web/sites/read"
+      ]
+    },
+    "azure:web:staticsite": {
+      "node_type": "ApplicationPlatform",
+      "service": "azure:web",
+      "scope": "global",
+      "enumerate": {
+        "operation": "arg:microsoft.web/staticsites",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": [
+          "name",
+          "location",
+          "subscriptionId",
+          "resourceGroup",
+          "properties",
+          "identity"
+        ]
+      },
+      "required_permissions": [
+        "Microsoft.Web/staticsites/read"
+      ]
+    }
+  }
+}

@@ -1,0 +1,458 @@
+{
+  "$comment": "RAGE node-type registry \u2014 the provider-independent vocabulary. OPEN: an unknown provider resource maps to the nearest generic type and keeps its native string verbatim (provider_type); if nothing fits, use the class-level Generic* fallback. A generic type names a SECURITY ROLE, not a product.",
+  "spec_version": "0.1",
+  "classes": {
+    "Identity": {
+      "doc": "Any principal that can hold permissions or be authenticated as."
+    },
+    "AdministrativeBoundary": {
+      "doc": "Containers that scope permissions, policy inheritance, and control."
+    },
+    "Compute": {
+      "doc": "Resources that execute attacker-influenceable code and usually run AS an identity."
+    },
+    "Storage": {
+      "doc": "Durable data-at-rest stores \u2014 objects, files, blocks, snapshots, backups, and artifact/image repositories an attacker reads, writes, or exfiltrates."
+    },
+    "Data": {
+      "doc": "Structured data services \u2014 relational/NoSQL databases, warehouses, caches, search and analytics stores holding queryable data."
+    },
+    "Messaging": {
+      "doc": "Integration primitives that can trigger execution or carry credentials."
+    },
+    "Secret": {
+      "doc": "Credential and cryptographic material \u2014 terminal targets and pivots."
+    },
+    "Network": {
+      "doc": "Connectivity and reachability primitives (networks, subnets, firewalls, routes, endpoints) that gate whether one resource can reach another."
+    },
+    "Policy": {
+      "doc": "Authorization & governance artifacts. Nodes so their mutation is an edge target."
+    },
+    "ManagementService": {
+      "doc": "Control-plane & security services whose abuse enables execution, persistence, or evasion."
+    }
+  },
+  "node_types": {
+    "HumanIdentity": {
+      "class": "Identity",
+      "doc": "Interactive user backed by a human (console/SSO login)."
+    },
+    "MachineIdentity": {
+      "class": "Identity",
+      "doc": "Non-human principal an attacker can assume/impersonate (role/SA/MI)."
+    },
+    "WorkloadIdentity": {
+      "class": "Identity",
+      "doc": "Identity bound to a running workload via platform attestation (IRSA, WI, pod identity)."
+    },
+    "ServiceIdentity": {
+      "class": "Identity",
+      "doc": "Identity a managed service runs as / on behalf of."
+    },
+    "ApplicationIdentity": {
+      "class": "Identity",
+      "doc": "Registered app/client with its own credentials & grants (Entra app, OAuth client)."
+    },
+    "FederatedIdentity": {
+      "class": "Identity",
+      "doc": "Identity asserted from an external IdP via trust/federation."
+    },
+    "ExternalIdentity": {
+      "class": "Identity",
+      "doc": "Principal from another tenant/account/org or third party."
+    },
+    "AnonymousIdentity": {
+      "class": "Identity",
+      "doc": "Unauthenticated / public principal (allUsers, *)."
+    },
+    "Group": {
+      "class": "Identity",
+      "doc": "Membership container that grants inherited permissions."
+    },
+    "Role": {
+      "class": "Identity",
+      "doc": "Assumable/assignable bundle of permissions (distinct from the principal that holds it)."
+    },
+    "ServiceAccount": {
+      "class": "Identity",
+      "doc": "GCP-style SA; also a MachineIdentity but modeled distinctly for impersonation semantics."
+    },
+    "ManagedIdentity": {
+      "class": "Identity",
+      "doc": "Azure MI (system/user-assigned) bound to resources."
+    },
+    "GenericIdentity": {
+      "class": "Identity",
+      "doc": ""
+    },
+    "CloudProvider": {
+      "class": "AdministrativeBoundary",
+      "doc": "Root of a provider's presence."
+    },
+    "Organization": {
+      "class": "AdministrativeBoundary",
+      "doc": "Top control boundary (AWS Org, GCP Org, Entra tenant root)."
+    },
+    "Tenant": {
+      "class": "AdministrativeBoundary",
+      "doc": "Azure Entra directory / identity boundary."
+    },
+    "ManagementGroup": {
+      "class": "AdministrativeBoundary",
+      "doc": "Azure MG; hierarchical policy scope."
+    },
+    "Folder": {
+      "class": "AdministrativeBoundary",
+      "doc": "GCP folder / AWS OU."
+    },
+    "Account": {
+      "class": "AdministrativeBoundary",
+      "doc": "AWS account \u2014 hard isolation + billing boundary."
+    },
+    "Subscription": {
+      "class": "AdministrativeBoundary",
+      "doc": "Azure subscription \u2014 RBAC + billing boundary."
+    },
+    "Project": {
+      "class": "AdministrativeBoundary",
+      "doc": "GCP project \u2014 resource + IAM boundary."
+    },
+    "ResourceGroup": {
+      "class": "AdministrativeBoundary",
+      "doc": "Azure resource group / logical grouping scope."
+    },
+    "Namespace": {
+      "class": "AdministrativeBoundary",
+      "doc": "K8s namespace or logical partition."
+    },
+    "GenericBoundary": {
+      "class": "AdministrativeBoundary",
+      "doc": ""
+    },
+    "VirtualMachine": {
+      "class": "Compute",
+      "doc": "IaaS instance (EC2/VM/GCE)."
+    },
+    "ServerlessFunction": {
+      "class": "Compute",
+      "doc": "FaaS (Lambda/Functions/Cloud Functions/Cloud Run jobs)."
+    },
+    "Container": {
+      "class": "Compute",
+      "doc": "A single container instance."
+    },
+    "ContainerService": {
+      "class": "Compute",
+      "doc": "Managed container runtime (ECS/ACI/Cloud Run service)."
+    },
+    "ContainerCluster": {
+      "class": "Compute",
+      "doc": "Cluster control plane (ECS cluster/AKS/GKE/EKS)."
+    },
+    "ContainerTask": {
+      "class": "Compute",
+      "doc": "Task/pod definition that runs as an identity."
+    },
+    "KubernetesCluster": {
+      "class": "Compute",
+      "doc": "K8s API server + RBAC domain."
+    },
+    "KubernetesWorkload": {
+      "class": "Compute",
+      "doc": "Deployment/Pod/Job bound to a service account."
+    },
+    "BuildWorker": {
+      "class": "Compute",
+      "doc": "CI/CD build agent (CodeBuild/Pipelines/Cloud Build)."
+    },
+    "BatchJob": {
+      "class": "Compute",
+      "doc": "Batch/job execution unit."
+    },
+    "Notebook": {
+      "class": "Compute",
+      "doc": "Managed notebook (SageMaker/AzureML/Vertex)."
+    },
+    "ApplicationPlatform": {
+      "class": "Compute",
+      "doc": "PaaS app host (App Runner/App Service/App Engine)."
+    },
+    "GenericCompute": {
+      "class": "Compute",
+      "doc": ""
+    },
+    "ObjectStorage": {
+      "class": "Storage",
+      "doc": "S3/Blob/GCS bucket."
+    },
+    "FileStorage": {
+      "class": "Storage",
+      "doc": "EFS/Azure Files/Filestore."
+    },
+    "BlockStorage": {
+      "class": "Storage",
+      "doc": "EBS/Managed Disk/Persistent Disk."
+    },
+    "Backup": {
+      "class": "Storage",
+      "doc": "Backup vault/set."
+    },
+    "Snapshot": {
+      "class": "Storage",
+      "doc": "Volume/DB snapshot \u2014 often exportable cross-account."
+    },
+    "ArtifactRepository": {
+      "class": "Storage",
+      "doc": "Package/artifact registry (CodeArtifact/Artifacts/Artifact Registry)."
+    },
+    "ContainerRegistry": {
+      "class": "Storage",
+      "doc": "Image registry (ECR/ACR/Artifact Registry) \u2014 code supply chain."
+    },
+    "GenericStorage": {
+      "class": "Storage",
+      "doc": ""
+    },
+    "RelationalDatabase": {
+      "class": "Data",
+      "doc": "RDS/SQL DB/Cloud SQL."
+    },
+    "NoSQLDatabase": {
+      "class": "Data",
+      "doc": "DynamoDB/Cosmos/Firestore/Bigtable."
+    },
+    "DataWarehouse": {
+      "class": "Data",
+      "doc": "Redshift/Synapse/BigQuery."
+    },
+    "Cache": {
+      "class": "Data",
+      "doc": "ElastiCache/Redis/Memorystore."
+    },
+    "SearchService": {
+      "class": "Data",
+      "doc": "OpenSearch/Cognitive Search."
+    },
+    "AnalyticsService": {
+      "class": "Data",
+      "doc": "EMR/Databricks/Dataproc/Glue."
+    },
+    "DataLake": {
+      "class": "Data",
+      "doc": "Lake Formation/ADLS/BigLake."
+    },
+    "GenericData": {
+      "class": "Data",
+      "doc": ""
+    },
+    "Queue": {
+      "class": "Messaging",
+      "doc": "SQS/Service Bus queue/Pub/Sub."
+    },
+    "Topic": {
+      "class": "Messaging",
+      "doc": "SNS/Service Bus topic/Pub/Sub topic."
+    },
+    "EventBus": {
+      "class": "Messaging",
+      "doc": "EventBridge/Event Grid/Eventarc."
+    },
+    "EventRule": {
+      "class": "Messaging",
+      "doc": "Rule mapping events -> targets (trigger creator)."
+    },
+    "Workflow": {
+      "class": "Messaging",
+      "doc": "Step Functions/Logic Apps/Workflows."
+    },
+    "Scheduler": {
+      "class": "Messaging",
+      "doc": "EventBridge Scheduler/Automation/Cloud Scheduler."
+    },
+    "Webhook": {
+      "class": "Messaging",
+      "doc": "Inbound HTTP trigger."
+    },
+    "API": {
+      "class": "Messaging",
+      "doc": "Service API surface."
+    },
+    "APIGateway": {
+      "class": "Messaging",
+      "doc": "API GW/APIM/API Gateway \u2014 front door + authz."
+    },
+    "GenericMessaging": {
+      "class": "Messaging",
+      "doc": ""
+    },
+    "Secret": {
+      "class": "Secret",
+      "doc": "Secret store entry (Secrets Manager/Key Vault secret/Secret Manager)."
+    },
+    "Credential": {
+      "class": "Secret",
+      "doc": "Generic credential blob."
+    },
+    "APIKey": {
+      "class": "Secret",
+      "doc": "Long-lived API key."
+    },
+    "AccessKey": {
+      "class": "Secret",
+      "doc": "IAM access key / SP client secret."
+    },
+    "Certificate": {
+      "class": "Secret",
+      "doc": "X.509 cert + private key."
+    },
+    "SSHKey": {
+      "class": "Secret",
+      "doc": "SSH keypair."
+    },
+    "EncryptionKey": {
+      "class": "Secret",
+      "doc": "KMS/Key Vault/Cloud KMS symmetric or asymmetric key."
+    },
+    "SigningKey": {
+      "class": "Secret",
+      "doc": "Key usable to sign tokens/artifacts."
+    },
+    "Token": {
+      "class": "Secret",
+      "doc": "OAuth/OIDC/session token."
+    },
+    "Password": {
+      "class": "Secret",
+      "doc": "Password credential."
+    },
+    "ConnectionString": {
+      "class": "Secret",
+      "doc": "Embedded credential (DB/queue conn string)."
+    },
+    "GenericSecret": {
+      "class": "Secret",
+      "doc": ""
+    },
+    "VirtualNetwork": {
+      "class": "Network",
+      "doc": "VPC/VNet/VPC network."
+    },
+    "Subnet": {
+      "class": "Network",
+      "doc": "Subnet."
+    },
+    "SecurityGroup": {
+      "class": "Network",
+      "doc": "Instance-level stateful filter."
+    },
+    "Firewall": {
+      "class": "Network",
+      "doc": "Network/subnet firewall or NSG."
+    },
+    "Route": {
+      "class": "Network",
+      "doc": "Route table entry."
+    },
+    "LoadBalancer": {
+      "class": "Network",
+      "doc": "ALB/NLB/App GW/LB."
+    },
+    "PrivateEndpoint": {
+      "class": "Network",
+      "doc": "PrivateLink/Private Endpoint/PSC."
+    },
+    "PublicEndpoint": {
+      "class": "Network",
+      "doc": "Public IP/DNS/ingress surface."
+    },
+    "VPN": {
+      "class": "Network",
+      "doc": "VPN gateway."
+    },
+    "Peering": {
+      "class": "Network",
+      "doc": "VPC/VNet peering."
+    },
+    "TransitGateway": {
+      "class": "Network",
+      "doc": "TGW/vWAN/Network Connectivity Center hub."
+    },
+    "DNS": {
+      "class": "Network",
+      "doc": "Managed DNS zone/record."
+    },
+    "NAT": {
+      "class": "Network",
+      "doc": "NAT gateway."
+    },
+    "NetworkInterface": {
+      "class": "Network",
+      "doc": "ENI/NIC \u2014 binds a workload to a network position."
+    },
+    "GenericNetwork": {
+      "class": "Network",
+      "doc": ""
+    },
+    "IAMPolicy": {
+      "class": "Policy",
+      "doc": "Identity-attached permission policy."
+    },
+    "ResourcePolicy": {
+      "class": "Policy",
+      "doc": "Resource-attached policy (bucket policy, KV access policy, IAM allow on resource)."
+    },
+    "TrustPolicy": {
+      "class": "Policy",
+      "doc": "Who may assume/impersonate a role/SA."
+    },
+    "PermissionBoundary": {
+      "class": "Policy",
+      "doc": "AWS permission boundary cap."
+    },
+    "OrganizationPolicy": {
+      "class": "Policy",
+      "doc": "GCP org policy / governance constraint."
+    },
+    "ServiceControlPolicy": {
+      "class": "Policy",
+      "doc": "AWS SCP guardrail."
+    },
+    "ConditionalPolicy": {
+      "class": "Policy",
+      "doc": "Condition-bearing binding / Conditional Access / deny assignment."
+    },
+    "GenericPolicy": {
+      "class": "Policy",
+      "doc": ""
+    },
+    "LoggingService": {
+      "class": "ManagementService",
+      "doc": "CloudTrail/Monitor/Cloud Logging \u2014 tampering target."
+    },
+    "SecurityService": {
+      "class": "ManagementService",
+      "doc": "GuardDuty/Defender/SCC."
+    },
+    "ConfigurationService": {
+      "class": "ManagementService",
+      "doc": "Config/Policy/asset inventory."
+    },
+    "AutomationService": {
+      "class": "ManagementService",
+      "doc": "SSM Automation/Azure Automation/Cloud Deploy."
+    },
+    "RemoteManagementService": {
+      "class": "ManagementService",
+      "doc": "SSM/Run Command/OS Login \u2014 direct command exec on hosts."
+    },
+    "GenericManagement": {
+      "class": "ManagementService",
+      "doc": ""
+    },
+    "MLModel": {
+      "class": "Data",
+      "doc": "A trained ML model artifact (e.g. SageMaker model) \u2014 an inference asset and data target."
+    }
+  }
+}

@@ -1,0 +1,52 @@
+# data & artifacts — NEVER commit (may contain engagement data)
+viz/data/
+# collector runtime output (engagement bundles) — the default --out is
+# ./output/<engagement>/ created in the CWD, wherever the binary is run from
+# (repo root, collectors/, engine/, …). Ignore every such dir and its subfolders,
+# but keep the Go source packages that happen to be named "output".
+output/
+!**/internal/output/
+collectors/bundle/
+**/blobs/
+**/*.zip
+**/*.db
+**/*.sqlite
+**/*.quarantine.zip
+.wip/
+
+# python / go build
+**/__pycache__/
+**/*.pyc
+.venv/
+**/.venv/
+venv/
+*.test
+
+# os
+.DS_Store
+
+# build output — `make` writes the binary here; `build-binaries.sh` writes releases
+bin/
+dist/
+
+# raw graph output / agent+browser state / compiled binaries (regenerable, may hold data)
+engine/graph/
+.playwright-mcp/
+.claude/
+collectors/thunderstorm
+
+# local archive — kept locally, never committed
+/archive/
+
+# local future/design specs — kept locally, never committed
+/future/
+
+# stray root screenshots
+/*.png
+/*.jpg
+/*.jpeg
+/*.gif
+
+# RAGE output artifacts (real graph data — never commit)
+*.rage.ndjson
+*.rage.zip

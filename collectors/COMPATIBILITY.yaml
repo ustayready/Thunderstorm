@@ -1,0 +1,66 @@
+# Thunderstorm — Collector ⇄ Catalog Compatibility
+# ===========================================================================
+# SINGLE SOURCE OF TRUTH for which collector versions work with which catalog
+# versions. Append one row per release; never rewrite history. The collector
+# reads this at build+run time; every Evidence Bundle records the versions it
+# was collected against so the engine downstream can reconcile too.
+#
+# THREE-WAY RECONCILIATION:  collector  ⇄  catalog contract  ⇄  engine
+# Each Evidence Bundle carries all three versions; any consumer can verify fit.
+# ===========================================================================
+
+schema_version: "1.0.0"          # version of THIS compatibility file's format
+
+# ---------------------------------------------------------------------------
+# THE CATALOG CONTRACT VERSION — one umbrella semver for the RAGE data contract
+# the collector consumes (RAGE vocab/{node,edge}-types.json + providers/*.json
+# collection recipes + exposure-db/*.json). RAGE is the source of truth; this is
+# the ONLY number the collector reconciles against. The vendored RAGE snapshot in
+# collectors/rage/ tracks a specific RAGE release; this umbrella rolls it up.
+#
+# BUMP RULES (semver):
+#   MAJOR  breaking — a field is removed/renamed, `access_mode`/`response_path`
+#          semantics change, a controlled-vocab value in use is removed, or a
+#          node/edge that the normalizer maps is renamed. Old collectors BREAK.
+#   MINOR  additive & backward-compatible — a new exposure site, new service,
+#          new optional field, or new vocab value. Old collectors keep working
+#          (they must tolerate unknown sites/fields).
+#   PATCH  correction only — fixed a path typo, updated a doc source, reworded a
+#          description. No structural change.
+# ---------------------------------------------------------------------------
+catalog_contract_version: "1.0.0"
+
+# Append-only log of contract changes (newest last).
+catalog_history:
+  - contract: "1.0.0"
+    date: "2026-09-04"
+    breaking: false
+    summary: >
+      Initial contract. exposure-sites schema v1.0.0 (AWS 406 sites / 91 svc,
+      GCP 265 sites / 54 svc; Azure pending); edges.yaml + nodes.yaml v1.0.0;
+      service catalog = 203 services. Resource Registry schema v1 (design only).
+    component_versions:                 # the per-artifact versions rolled into 1.0.0
+      exposure_sites_schema: "1.0.0"
+      edges_schema: "1.0.0"
+      nodes_schema: "1.0.0"
+      service_catalog: "1.0.0"
+      resource_registry_schema: "1.0.0"   # not yet built
+
+# ---------------------------------------------------------------------------
+# COLLECTOR RELEASES — each declares the catalog-contract range it supports as a
+# semver range. "Future collectors support existing catalogs" = keep the lower
+# bound and only widen the upper as the contract evolves. A collector REFUSES to
+# run against a catalog outside its range (clear error), never guesses.
+#
+# Add a row per released binary. Example (uncomment when the first one ships):
+# collectors:
+#   - version: "0.1.0"
+#     date: "YYYY-MM-DD"
+#     supports_catalog: ">=1.0.0 <2.0.0"   # all 1.x catalogs
+#     min_engine: "0.1.0"                   # engine version that can read its bundles
+#     notes: "AWS only (M0-M4)."
+# ---------------------------------------------------------------------------
+collectors: []   # none built yet — this is design-stage
+
+# Convenience: quick-glance matrix, regenerated from the rows above.
+#   collector 0.1.x  →  catalog >=1.0.0 <2.0.0   (populate when releases exist)

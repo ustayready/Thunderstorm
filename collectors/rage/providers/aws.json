@@ -1,0 +1,2316 @@
+{
+  "$comment": "RAGE provider registry (AWS) \u2014 every native resource type, its RAGE node_type (the mapping), and the collection recipe a conforming RAGE Collector uses to enumerate it (enumerate op, id/arn fields, detail-enrichment chain, required permissions). services[] gives the service-level rollup.",
+  "spec_version": "0.1",
+  "provider": "aws",
+  "services": {
+    "aws:accessanalyzer": {
+      "name": "IAM Access Analyzer",
+      "generic_types": [
+        "SecurityService"
+      ],
+      "attack_relevance": "low"
+    },
+    "aws:account": {
+      "name": "Account Management",
+      "generic_types": [
+        "Account"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:acm": {
+      "name": "Certificate Manager",
+      "generic_types": [
+        "Certificate"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:acmpca": {
+      "name": "ACM Private CA",
+      "generic_types": [
+        "SigningKey"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:amplify": {
+      "name": "Amplify",
+      "generic_types": [
+        "ApplicationPlatform"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:apigateway": {
+      "name": "API Gateway",
+      "generic_types": [
+        "APIGateway"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:appflow": {
+      "name": "AppFlow",
+      "generic_types": [
+        "Workflow"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:appmesh": {
+      "name": "App Mesh",
+      "generic_types": [
+        "GenericNetwork"
+      ],
+      "attack_relevance": "low"
+    },
+    "aws:apprunner": {
+      "name": "App Runner",
+      "generic_types": [
+        "ApplicationPlatform"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:athena": {
+      "name": "Athena",
+      "generic_types": [
+        "AnalyticsService"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:autoscaling": {
+      "name": "EC2 Auto Scaling",
+      "generic_types": [
+        "GenericCompute"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:backup": {
+      "name": "AWS Backup",
+      "generic_types": [
+        "Backup"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:batch": {
+      "name": "Batch",
+      "generic_types": [
+        "BatchJob"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:beanstalk": {
+      "name": "Elastic Beanstalk",
+      "generic_types": [
+        "ApplicationPlatform"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:bedrock": {
+      "name": "Bedrock",
+      "generic_types": [
+        "MLModel"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:cloudformation": {
+      "name": "CloudFormation",
+      "generic_types": [
+        "AutomationService"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:cloudfront": {
+      "name": "CloudFront",
+      "generic_types": [
+        "LoadBalancer"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:cloudhsm": {
+      "name": "CloudHSM",
+      "generic_types": [
+        "EncryptionKey"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:cloudtrail": {
+      "name": "CloudTrail",
+      "generic_types": [
+        "LoggingService"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:cloudwatch": {
+      "name": "CloudWatch/Logs",
+      "generic_types": [
+        "LoggingService"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:codeartifact": {
+      "name": "CodeArtifact",
+      "generic_types": [
+        "ArtifactRepository"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:codebuild": {
+      "name": "CodeBuild",
+      "generic_types": [
+        "BuildWorker"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:codecommit": {
+      "name": "CodeCommit",
+      "generic_types": [
+        "ArtifactRepository"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:codedeploy": {
+      "name": "CodeDeploy",
+      "generic_types": [
+        "AutomationService"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:codepipeline": {
+      "name": "CodePipeline",
+      "generic_types": [
+        "Workflow"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:cognito": {
+      "name": "Cognito",
+      "generic_types": [
+        "FederatedIdentity"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:config": {
+      "name": "AWS Config",
+      "generic_types": [
+        "ConfigurationService"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:controltower": {
+      "name": "Control Tower",
+      "generic_types": [
+        "GenericManagement"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:datapipeline": {
+      "name": "Data Pipeline",
+      "generic_types": [
+        "Workflow"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:detective": {
+      "name": "Detective",
+      "generic_types": [
+        "SecurityService"
+      ],
+      "attack_relevance": "low"
+    },
+    "aws:directconnect": {
+      "name": "Direct Connect",
+      "generic_types": [
+        "VPN"
+      ],
+      "attack_relevance": "low"
+    },
+    "aws:documentdb": {
+      "name": "DocumentDB",
+      "generic_types": [
+        "NoSQLDatabase"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:ds": {
+      "name": "Directory Service",
+      "generic_types": [
+        "FederatedIdentity"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:dynamodb": {
+      "name": "DynamoDB",
+      "generic_types": [
+        "NoSQLDatabase"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:ebs": {
+      "name": "EBS",
+      "generic_types": [
+        "Snapshot"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:ec2": {
+      "name": "EC2",
+      "generic_types": [
+        "NetworkInterface",
+        "PrivateEndpoint",
+        "Route",
+        "SecurityGroup",
+        "Subnet",
+        "VirtualMachine"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:ecr": {
+      "name": "ECR",
+      "generic_types": [
+        "ContainerRegistry"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:ecs": {
+      "name": "ECS/Fargate",
+      "generic_types": [
+        "ContainerCluster"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:efs": {
+      "name": "EFS",
+      "generic_types": [
+        "FileStorage"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:eks": {
+      "name": "EKS",
+      "generic_types": [
+        "KubernetesCluster"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:elasticache": {
+      "name": "ElastiCache",
+      "generic_types": [
+        "Cache"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:elb": {
+      "name": "ELB/ALB/NLB",
+      "generic_types": [
+        "LoadBalancer"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:emr": {
+      "name": "EMR",
+      "generic_types": [
+        "AnalyticsService"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:eventbridge": {
+      "name": "EventBridge",
+      "generic_types": [
+        "EventBus"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:firewallmanager": {
+      "name": "Firewall Manager",
+      "generic_types": [
+        "SecurityService"
+      ],
+      "attack_relevance": "low"
+    },
+    "aws:fsx": {
+      "name": "FSx",
+      "generic_types": [
+        "FileStorage"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:globalaccelerator": {
+      "name": "Global Accelerator",
+      "generic_types": [
+        "PublicEndpoint"
+      ],
+      "attack_relevance": "low"
+    },
+    "aws:glue": {
+      "name": "Glue",
+      "generic_types": [
+        "BatchJob"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:guardduty": {
+      "name": "GuardDuty",
+      "generic_types": [
+        "SecurityService"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:iam": {
+      "name": "IAM",
+      "generic_types": [
+        "AccessKey",
+        "Group",
+        "HumanIdentity",
+        "IAMPolicy",
+        "Role"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:imagebuilder": {
+      "name": "EC2 Image Builder",
+      "generic_types": [
+        "BuildWorker"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:inspector": {
+      "name": "Inspector",
+      "generic_types": [
+        "SecurityService"
+      ],
+      "attack_relevance": "low"
+    },
+    "aws:keyspaces": {
+      "name": "Keyspaces",
+      "generic_types": [
+        "NoSQLDatabase"
+      ],
+      "attack_relevance": "low"
+    },
+    "aws:kinesis": {
+      "name": "Kinesis",
+      "generic_types": [
+        "Queue"
+      ],
+      "attack_relevance": "low"
+    },
+    "aws:kms": {
+      "name": "KMS",
+      "generic_types": [
+        "EncryptionKey"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:lakeformation": {
+      "name": "Lake Formation",
+      "generic_types": [
+        "DataLake"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:lambda": {
+      "name": "Lambda",
+      "generic_types": [
+        "ServerlessFunction"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:lightsail": {
+      "name": "Lightsail",
+      "generic_types": [
+        "VirtualMachine"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:macie": {
+      "name": "Macie",
+      "generic_types": [
+        "SecurityService"
+      ],
+      "attack_relevance": "low"
+    },
+    "aws:memorydb": {
+      "name": "MemoryDB",
+      "generic_types": [
+        "Cache"
+      ],
+      "attack_relevance": "low"
+    },
+    "aws:mq": {
+      "name": "Amazon MQ",
+      "generic_types": [
+        "Queue"
+      ],
+      "attack_relevance": "low"
+    },
+    "aws:msk": {
+      "name": "MSK (Kafka)",
+      "generic_types": [
+        "Queue"
+      ],
+      "attack_relevance": "low"
+    },
+    "aws:neptune": {
+      "name": "Neptune",
+      "generic_types": [
+        "NoSQLDatabase"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:networkfirewall": {
+      "name": "Network Firewall",
+      "generic_types": [
+        "Firewall"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:opensearch": {
+      "name": "OpenSearch",
+      "generic_types": [
+        "SearchService"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:opsworks": {
+      "name": "OpsWorks",
+      "generic_types": [
+        "AutomationService"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:organizations": {
+      "name": "Organizations",
+      "generic_types": [
+        "Account"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:qldb": {
+      "name": "QLDB",
+      "generic_types": [
+        "GenericData"
+      ],
+      "attack_relevance": "low"
+    },
+    "aws:quicksight": {
+      "name": "QuickSight",
+      "generic_types": [
+        "AnalyticsService"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:ram": {
+      "name": "Resource Access Manager",
+      "generic_types": [
+        "ResourcePolicy"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:rds": {
+      "name": "RDS/Aurora",
+      "generic_types": [
+        "RelationalDatabase"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:redshift": {
+      "name": "Redshift",
+      "generic_types": [
+        "DataWarehouse"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:rolesanywhere": {
+      "name": "IAM Roles Anywhere",
+      "generic_types": [
+        "FederatedIdentity"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:route53": {
+      "name": "Route 53",
+      "generic_types": [
+        "DNS"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:s3": {
+      "name": "S3",
+      "generic_types": [
+        "ObjectStorage"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:sagemaker": {
+      "name": "SageMaker",
+      "generic_types": [
+        "BatchJob",
+        "GenericManagement",
+        "MLModel",
+        "Notebook",
+        "Workflow"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:secretsmanager": {
+      "name": "Secrets Manager",
+      "generic_types": [
+        "Secret"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:securityhub": {
+      "name": "Security Hub",
+      "generic_types": [
+        "SecurityService"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:servicecatalog": {
+      "name": "Service Catalog",
+      "generic_types": [
+        "AutomationService"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:sns": {
+      "name": "SNS",
+      "generic_types": [
+        "Topic"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:sqs": {
+      "name": "SQS",
+      "generic_types": [
+        "Queue"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:ssm": {
+      "name": "Systems Manager",
+      "generic_types": [
+        "VirtualMachine"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:ssm-params": {
+      "name": "SSM Parameter Store",
+      "generic_types": [
+        "Secret"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:sso": {
+      "name": "IAM Identity Center",
+      "generic_types": [
+        "GenericManagement"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:stepfunctions": {
+      "name": "Step Functions",
+      "generic_types": [
+        "Workflow"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:sts": {
+      "name": "STS",
+      "generic_types": [
+        "Token",
+        "Role"
+      ],
+      "attack_relevance": "high",
+      "collected": false
+    },
+    "aws:tgw": {
+      "name": "Transit Gateway",
+      "generic_types": [
+        "TransitGateway"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:timestream": {
+      "name": "Timestream",
+      "generic_types": [
+        "GenericData"
+      ],
+      "attack_relevance": "low"
+    },
+    "aws:vpc": {
+      "name": "VPC",
+      "generic_types": [
+        "VirtualNetwork"
+      ],
+      "attack_relevance": "high"
+    },
+    "aws:vpclattice": {
+      "name": "VPC Lattice",
+      "generic_types": [
+        "GenericNetwork"
+      ],
+      "attack_relevance": "medium"
+    },
+    "aws:waf": {
+      "name": "WAF/Shield",
+      "generic_types": [
+        "Firewall"
+      ],
+      "attack_relevance": "low"
+    }
+  },
+  "facts": [
+    {
+      "kind": "identity_policy",
+      "collect": {
+        "operation": "iam:ListRolePolicies + iam:GetRolePolicy (inline) / iam:ListAttachedRolePolicies (managed)",
+        "over": "aws:iam:role, aws:iam:user, aws:iam:group",
+        "scope": "global"
+      },
+      "backs": [
+        "HasPermission",
+        "HasPolicy"
+      ],
+      "required_permissions": [
+        "iam:ListRolePolicies",
+        "iam:GetRolePolicy",
+        "iam:ListAttachedRolePolicies",
+        "iam:ListUserPolicies",
+        "iam:GetUserPolicy",
+        "iam:ListGroupsForUser"
+      ],
+      "note": "identity policies are evaluated into effective permissions that back every capability edge (CanRead/Write/Modify/Invoke/PassIdentity/...)"
+    },
+    {
+      "kind": "managed_policy",
+      "collect": {
+        "operation": "iam:GetPolicy + iam:GetPolicyVersion",
+        "over": "aws:iam:policy",
+        "scope": "global"
+      },
+      "backs": [
+        "HasPolicy",
+        "HasPermission"
+      ],
+      "required_permissions": [
+        "iam:GetPolicy",
+        "iam:GetPolicyVersion",
+        "iam:ListPolicies"
+      ]
+    },
+    {
+      "kind": "trust_policy",
+      "collect": {
+        "operation": "iam:GetRole (AssumeRolePolicyDocument)",
+        "over": "aws:iam:role",
+        "scope": "global"
+      },
+      "backs": [
+        "CanAssume",
+        "CrossAccountTrust",
+        "CanFederateAs"
+      ],
+      "required_permissions": [
+        "iam:GetRole",
+        "iam:ListRoles"
+      ]
+    },
+    {
+      "kind": "resource_policy",
+      "collect": {
+        "operation": "s3:GetBucketPolicy / kms:GetKeyPolicy / secretsmanager:GetResourcePolicy / sns:GetTopicAttributes / sqs:GetQueueAttributes / lambda:GetPolicy / ecr:GetRepositoryPolicy",
+        "over": "aws:s3:bucket, aws:kms:key, aws:secretsmanager:secret, aws:sns:topic, aws:sqs:queue, aws:lambda:function, aws:ecr:repository",
+        "scope": "account"
+      },
+      "backs": [
+        "HasPolicy",
+        "CrossAccountTrust",
+        "ExposedToInternet",
+        "ExposedToAccount",
+        "CanReadSecret",
+        "CanDecrypt",
+        "CanReadData"
+      ],
+      "required_permissions": [
+        "s3:GetBucketPolicy",
+        "kms:GetKeyPolicy",
+        "secretsmanager:GetResourcePolicy",
+        "sns:GetTopicAttributes",
+        "sqs:GetQueueAttributes",
+        "lambda:GetPolicy",
+        "ecr:GetRepositoryPolicy"
+      ]
+    },
+    {
+      "kind": "scp",
+      "collect": {
+        "operation": "organizations:ListPoliciesForTarget + organizations:DescribePolicy",
+        "over": "aws:organizations:account",
+        "scope": "global"
+      },
+      "backs": [],
+      "required_permissions": [
+        "organizations:ListPoliciesForTarget",
+        "organizations:DescribePolicy"
+      ],
+      "note": "a guardrail: SCPs constrain/deny effective permissions (edge state BLOCKED)"
+    },
+    {
+      "kind": "membership",
+      "collect": {
+        "operation": "iam:GetGroup",
+        "over": "aws:iam:group",
+        "scope": "global"
+      },
+      "backs": [
+        "MemberOf"
+      ],
+      "required_permissions": [
+        "iam:GetGroup",
+        "iam:ListGroupsForUser"
+      ]
+    },
+    {
+      "kind": "network_rule",
+      "collect": {
+        "operation": "ec2:DescribeSecurityGroups + ec2:DescribeNetworkInterfaces",
+        "over": "aws:ec2:security-group, aws:ec2:network-interface",
+        "scope": "region"
+      },
+      "backs": [
+        "CanNetworkReach",
+        "CanReachPort",
+        "ExposedToInternet",
+        "PrivateReachability"
+      ],
+      "required_permissions": [
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeRouteTables"
+      ]
+    },
+    {
+      "kind": "credential",
+      "collect": {
+        "operation": "iam:ListAccessKeys",
+        "over": "aws:iam:user",
+        "scope": "global"
+      },
+      "backs": [
+        "CredentialsFor",
+        "ExposesCredential"
+      ],
+      "required_permissions": [
+        "iam:ListAccessKeys"
+      ]
+    }
+  ],
+  "resources": {
+    "aws:accessanalyzer:analyzer": {
+      "node_type": "SecurityService",
+      "service": "aws:accessanalyzer",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "access-analyzer:ListAnalyzers",
+        "id_field": "analyzer_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "access-analyzer:ListAnalyzers"
+      ]
+    },
+    "aws:account:region": {
+      "node_type": "Account",
+      "service": "aws:account",
+      "scope": "global",
+      "enumerate": {
+        "operation": "account:ListRegions",
+        "id_field": "region_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "account:ListRegions"
+      ]
+    },
+    "aws:acm:certificate": {
+      "node_type": "Certificate",
+      "service": "aws:acm",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "acm:ListCertificates",
+        "id_field": "certificate_arn",
+        "arn_field": "certificate_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "acm:ListCertificates"
+      ]
+    },
+    "aws:acmpca:certificate-authority": {
+      "node_type": "SigningKey",
+      "service": "aws:acmpca",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "acm-pca:ListCertificateAuthorities",
+        "id_field": "arn",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "acm-pca:ListCertificateAuthorities"
+      ]
+    },
+    "aws:amplify:app": {
+      "node_type": "ApplicationPlatform",
+      "service": "aws:amplify",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "amplify:ListApps",
+        "id_field": "app_id",
+        "arn_field": "app_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "amplify:ListApps"
+      ]
+    },
+    "aws:apigateway:rest-api": {
+      "node_type": "APIGateway",
+      "service": "aws:apigateway",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "apigateway:GET",
+        "id_field": "rest_api_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "apigateway:GET"
+      ]
+    },
+    "aws:appflow:flow": {
+      "node_type": "Workflow",
+      "service": "aws:appflow",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "appflow:ListFlows",
+        "id_field": "flow_name",
+        "arn_field": "flow_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "appflow:ListFlows"
+      ]
+    },
+    "aws:appmesh:mesh": {
+      "node_type": "GenericNetwork",
+      "service": "aws:appmesh",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "appmesh:ListMeshes",
+        "id_field": "mesh_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "appmesh:ListMeshes"
+      ]
+    },
+    "aws:apprunner:service": {
+      "node_type": "ApplicationPlatform",
+      "service": "aws:apprunner",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "apprunner:ListServices",
+        "id_field": "service_name",
+        "arn_field": "service_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "apprunner:ListServices"
+      ]
+    },
+    "aws:athena:workgroup": {
+      "node_type": "AnalyticsService",
+      "service": "aws:athena",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "athena:ListWorkGroups",
+        "id_field": "workgroup_name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "athena:ListWorkGroups"
+      ]
+    },
+    "aws:autoscaling:auto-scaling-group": {
+      "node_type": "GenericCompute",
+      "service": "aws:autoscaling",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "autoscaling:DescribeAutoScalingGroups",
+        "id_field": "auto_scaling_group_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "autoscaling:DescribeAutoScalingGroups"
+      ]
+    },
+    "aws:backup:vault": {
+      "node_type": "Backup",
+      "service": "aws:backup",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "backup:ListBackupVaults",
+        "id_field": "backup_vault_name",
+        "arn_field": "backup_vault_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "backup:ListBackupVaults"
+      ]
+    },
+    "aws:batch:job-queue": {
+      "node_type": "BatchJob",
+      "service": "aws:batch",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "batch:DescribeJobQueues",
+        "id_field": "job_queue_name",
+        "arn_field": "job_queue_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "batch:DescribeJobQueues"
+      ]
+    },
+    "aws:beanstalk:environment": {
+      "node_type": "ApplicationPlatform",
+      "service": "aws:beanstalk",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "beanstalk:DescribeEnvironments",
+        "id_field": "environment_name",
+        "arn_field": "environment_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "elasticbeanstalk:DescribeEnvironments"
+      ]
+    },
+    "aws:bedrock:custom_model": {
+      "node_type": "MLModel",
+      "service": "aws:bedrock",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "bedrock:ListCustomModels",
+        "id_field": "model_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "bedrock:ListCustomModels"
+      ]
+    },
+    "aws:cloudformation:stack": {
+      "node_type": "AutomationService",
+      "service": "aws:cloudformation",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "cloudformation:DescribeStacks",
+        "id_field": "stack_name",
+        "arn_field": "stack_id",
+        "attributes": []
+      },
+      "required_permissions": [
+        "cloudformation:DescribeStacks"
+      ]
+    },
+    "aws:cloudfront:distribution": {
+      "node_type": "LoadBalancer",
+      "service": "aws:cloudfront",
+      "scope": "global",
+      "enumerate": {
+        "operation": "cloudfront:ListDistributions",
+        "id_field": "distribution_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "cloudfront:ListDistributions"
+      ]
+    },
+    "aws:cloudhsm:cluster": {
+      "node_type": "EncryptionKey",
+      "service": "aws:cloudhsm",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "cloudhsm:DescribeClusters",
+        "id_field": "cluster_id",
+        "attributes": []
+      },
+      "required_permissions": [
+        "cloudhsm:DescribeClusters"
+      ]
+    },
+    "aws:cloudtrail:trail": {
+      "node_type": "LoggingService",
+      "service": "aws:cloudtrail",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "cloudtrail:DescribeTrails",
+        "id_field": "trail_name",
+        "arn_field": "trail_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "cloudtrail:DescribeTrails"
+      ]
+    },
+    "aws:cloudwatch:log_group": {
+      "node_type": "LoggingService",
+      "service": "aws:cloudwatch",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "cloudwatch:DescribeLogGroups",
+        "id_field": "log_group_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "logs:DescribeLogGroups"
+      ]
+    },
+    "aws:codeartifact:repository": {
+      "node_type": "ArtifactRepository",
+      "service": "aws:codeartifact",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "codeartifact:ListRepositories",
+        "id_field": "repository_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "codeartifact:ListRepositories"
+      ]
+    },
+    "aws:codebuild:project": {
+      "node_type": "BuildWorker",
+      "service": "aws:codebuild",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "codebuild:ListProjects",
+        "id_field": "project_name",
+        "attributes": [],
+        "yields": [
+          "project_name"
+        ]
+      },
+      "detail": [
+        {
+          "operation": "codebuild:BatchGetProjects",
+          "bind": {
+            "name": "$project_name"
+          },
+          "capture": [
+            "service_role",
+            "source_type"
+          ]
+        }
+      ],
+      "required_permissions": [
+        "codebuild:ListProjects",
+        "codebuild:BatchGetProjects"
+      ]
+    },
+    "aws:codecommit:repository": {
+      "node_type": "ArtifactRepository",
+      "service": "aws:codecommit",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "codecommit:ListRepositories",
+        "id_field": "repository_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "codecommit:ListRepositories"
+      ]
+    },
+    "aws:codedeploy:application": {
+      "node_type": "AutomationService",
+      "service": "aws:codedeploy",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "codedeploy:ListApplications",
+        "id_field": "application_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "codedeploy:ListApplications"
+      ]
+    },
+    "aws:codepipeline:pipeline": {
+      "node_type": "Workflow",
+      "service": "aws:codepipeline",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "codepipeline:ListPipelines",
+        "id_field": "pipeline_name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "codepipeline:ListPipelines"
+      ]
+    },
+    "aws:cognito:user_pool": {
+      "node_type": "FederatedIdentity",
+      "service": "aws:cognito",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "cognito:ListUserPools",
+        "id_field": "user_pool_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "cognito-idp:ListUserPools"
+      ]
+    },
+    "aws:config:config-rule": {
+      "node_type": "ConfigurationService",
+      "service": "aws:config",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "config:DescribeConfigRules",
+        "id_field": "config_rule_name",
+        "arn_field": "config_rule_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "config:DescribeConfigRules"
+      ]
+    },
+    "aws:controltower:landing_zone": {
+      "node_type": "GenericManagement",
+      "service": "aws:controltower",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "controltower:ListLandingZones",
+        "id_field": "arn",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "controltower:ListLandingZones"
+      ]
+    },
+    "aws:datapipeline:pipeline": {
+      "node_type": "Workflow",
+      "service": "aws:datapipeline",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "datapipeline:ListPipelines",
+        "id_field": "pipeline_id",
+        "attributes": [
+          "pipeline_name"
+        ]
+      },
+      "required_permissions": [
+        "datapipeline:ListPipelines"
+      ]
+    },
+    "aws:detective:graph": {
+      "node_type": "SecurityService",
+      "service": "aws:detective",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "detective:ListGraphs",
+        "id_field": "arn",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "detective:ListGraphs"
+      ]
+    },
+    "aws:directconnect:connection": {
+      "node_type": "VPN",
+      "service": "aws:directconnect",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "directconnect:DescribeConnections",
+        "id_field": "connection_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "directconnect:DescribeConnections"
+      ]
+    },
+    "aws:documentdb:db_cluster": {
+      "node_type": "NoSQLDatabase",
+      "service": "aws:documentdb",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "documentdb:DescribeDBClusters",
+        "id_field": "db_cluster_identifier",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "rds:DescribeDBClusters"
+      ]
+    },
+    "aws:ds:directory": {
+      "node_type": "FederatedIdentity",
+      "service": "aws:ds",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "ds:DescribeDirectories",
+        "id_field": "directory_id",
+        "attributes": []
+      },
+      "required_permissions": [
+        "ds:DescribeDirectories"
+      ]
+    },
+    "aws:dynamodb:table": {
+      "node_type": "NoSQLDatabase",
+      "service": "aws:dynamodb",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "dynamodb:ListTables",
+        "id_field": "table_name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "dynamodb:ListTables"
+      ]
+    },
+    "aws:ebs:snapshot": {
+      "node_type": "Snapshot",
+      "service": "aws:ebs",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "ebs:DescribeSnapshots",
+        "id_field": "snapshot_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "ec2:DescribeSnapshots"
+      ]
+    },
+    "aws:ec2:instance": {
+      "node_type": "VirtualMachine",
+      "service": "aws:ec2",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "ec2:DescribeInstances",
+        "id_field": "instance_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "ec2:DescribeInstances"
+      ]
+    },
+    "aws:ec2:network-interface": {
+      "node_type": "NetworkInterface",
+      "service": "aws:ec2",
+      "scope": "region",
+      "enumerate": {
+        "operation": "ec2:DescribeNetworkInterfaces",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "ec2:DescribeNetworkInterfaces"
+      ]
+    },
+    "aws:ec2:route-table": {
+      "node_type": "Route",
+      "service": "aws:ec2",
+      "scope": "region",
+      "enumerate": {
+        "operation": "ec2:DescribeRouteTables",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "ec2:DescribeRouteTables"
+      ]
+    },
+    "aws:ec2:security-group": {
+      "node_type": "SecurityGroup",
+      "service": "aws:ec2",
+      "scope": "region",
+      "enumerate": {
+        "operation": "ec2:DescribeSecurityGroups",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "ec2:DescribeSecurityGroups"
+      ]
+    },
+    "aws:ec2:subnet": {
+      "node_type": "Subnet",
+      "service": "aws:ec2",
+      "scope": "region",
+      "enumerate": {
+        "operation": "ec2:DescribeSubnets",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "ec2:DescribeSubnets"
+      ]
+    },
+    "aws:ec2:vpc-endpoint": {
+      "node_type": "PrivateEndpoint",
+      "service": "aws:ec2",
+      "scope": "region",
+      "enumerate": {
+        "operation": "ec2:DescribeVpcEndpoints",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "ec2:DescribeVpcEndpoints"
+      ]
+    },
+    "aws:ecr:repository": {
+      "node_type": "ContainerRegistry",
+      "service": "aws:ecr",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "ecr:DescribeRepositories",
+        "id_field": "repository_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "ecr:DescribeRepositories"
+      ]
+    },
+    "aws:ecs:cluster": {
+      "node_type": "ContainerCluster",
+      "service": "aws:ecs",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "ecs:ListClusters",
+        "id_field": "cluster_arn",
+        "arn_field": "cluster_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "ecs:ListClusters"
+      ]
+    },
+    "aws:efs:filesystem": {
+      "node_type": "FileStorage",
+      "service": "aws:efs",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "elasticfilesystem:DescribeFileSystems",
+        "id_field": "file_system_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "elasticfilesystem:DescribeFileSystems"
+      ]
+    },
+    "aws:eks:cluster": {
+      "node_type": "KubernetesCluster",
+      "service": "aws:eks",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "eks:ListClusters",
+        "id_field": "cluster_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "eks:ListClusters"
+      ]
+    },
+    "aws:elasticache:cache_cluster": {
+      "node_type": "Cache",
+      "service": "aws:elasticache",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "elasticache:DescribeCacheClusters",
+        "id_field": "cache_cluster_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "elasticache:DescribeCacheClusters"
+      ]
+    },
+    "aws:elb:load_balancer": {
+      "node_type": "LoadBalancer",
+      "service": "aws:elb",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "elasticloadbalancing:DescribeLoadBalancers",
+        "id_field": "load_balancer_name",
+        "arn_field": "load_balancer_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "elasticloadbalancing:DescribeLoadBalancers"
+      ]
+    },
+    "aws:emr:cluster": {
+      "node_type": "AnalyticsService",
+      "service": "aws:emr",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "elasticmapreduce:ListClusters",
+        "id_field": "cluster_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "elasticmapreduce:ListClusters"
+      ]
+    },
+    "aws:eventbridge:event_bus": {
+      "node_type": "EventBus",
+      "service": "aws:eventbridge",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "eventbridge:ListEventBuses",
+        "id_field": "name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "events:ListEventBuses"
+      ]
+    },
+    "aws:firewallmanager:policy": {
+      "node_type": "SecurityService",
+      "service": "aws:firewallmanager",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "firewallmanager:ListPolicies",
+        "id_field": "policy_id",
+        "arn_field": "policy_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "fms:ListPolicies"
+      ]
+    },
+    "aws:fsx:file_system": {
+      "node_type": "FileStorage",
+      "service": "aws:fsx",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "fsx:DescribeFileSystems",
+        "id_field": "file_system_id",
+        "arn_field": "resource_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "fsx:DescribeFileSystems"
+      ]
+    },
+    "aws:globalaccelerator:accelerator": {
+      "node_type": "PublicEndpoint",
+      "service": "aws:globalaccelerator",
+      "scope": "global",
+      "enumerate": {
+        "operation": "globalaccelerator:ListAccelerators",
+        "id_field": "accelerator_arn",
+        "arn_field": "accelerator_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "globalaccelerator:ListAccelerators"
+      ]
+    },
+    "aws:glue:job": {
+      "node_type": "BatchJob",
+      "service": "aws:glue",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "glue:GetJobs",
+        "id_field": "job_name",
+        "attributes": [
+          "role_arn"
+        ]
+      },
+      "required_permissions": [
+        "glue:GetJobs"
+      ]
+    },
+    "aws:guardduty:detector": {
+      "node_type": "SecurityService",
+      "service": "aws:guardduty",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "guardduty:ListDetectors",
+        "id_field": "detector_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "guardduty:ListDetectors"
+      ]
+    },
+    "aws:iam:access-key": {
+      "node_type": "AccessKey",
+      "service": "aws:iam",
+      "scope": "global",
+      "enumerate": {
+        "operation": "iam:ListAccessKeys",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "iam:ListAccessKeys"
+      ]
+    },
+    "aws:iam:group": {
+      "node_type": "Group",
+      "service": "aws:iam",
+      "scope": "global",
+      "enumerate": {
+        "operation": "iam:ListGroups",
+        "id_field": "group_name"
+      },
+      "required_permissions": [
+        "iam:ListGroups"
+      ]
+    },
+    "aws:iam:policy": {
+      "node_type": "IAMPolicy",
+      "service": "aws:iam",
+      "scope": "global",
+      "enumerate": {
+        "operation": "iam:ListPolicies",
+        "id_field": "policy_name"
+      },
+      "required_permissions": [
+        "iam:ListPolicies"
+      ]
+    },
+    "aws:iam:role": {
+      "node_type": "Role",
+      "service": "aws:iam",
+      "scope": "global",
+      "enumerate": {
+        "operation": "iam:ListRoles",
+        "id_field": "role_name"
+      },
+      "required_permissions": [
+        "iam:ListRoles"
+      ]
+    },
+    "aws:iam:user": {
+      "node_type": "HumanIdentity",
+      "service": "aws:iam",
+      "scope": "global",
+      "enumerate": {
+        "operation": "iam:ListUsers",
+        "id_field": "user_name",
+        "arn_field": "arn",
+        "attributes": [
+          "user_id"
+        ]
+      },
+      "required_permissions": [
+        "iam:ListUsers"
+      ]
+    },
+    "aws:imagebuilder:image_pipeline": {
+      "node_type": "BuildWorker",
+      "service": "aws:imagebuilder",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "imagebuilder:ListImagePipelines",
+        "id_field": "name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "imagebuilder:ListImagePipelines"
+      ]
+    },
+    "aws:inspector:finding": {
+      "node_type": "SecurityService",
+      "service": "aws:inspector",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "inspector:ListFindings",
+        "id_field": "finding_arn",
+        "arn_field": "finding_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "inspector2:ListFindings"
+      ]
+    },
+    "aws:keyspaces:keyspace": {
+      "node_type": "NoSQLDatabase",
+      "service": "aws:keyspaces",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "cassandra:Select",
+        "id_field": "keyspace_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "cassandra:Select"
+      ]
+    },
+    "aws:kinesis:stream": {
+      "node_type": "Queue",
+      "service": "aws:kinesis",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "kinesis:ListStreams",
+        "id_field": "stream_name",
+        "arn_field": "stream_name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "kinesis:ListStreams"
+      ]
+    },
+    "aws:kms:key": {
+      "node_type": "EncryptionKey",
+      "service": "aws:kms",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "kms:ListKeys",
+        "id_field": "key_id",
+        "arn_field": "key_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "kms:ListKeys"
+      ]
+    },
+    "aws:lakeformation:resource": {
+      "node_type": "DataLake",
+      "service": "aws:lakeformation",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "lakeformation:ListResources",
+        "id_field": "resource_arn",
+        "arn_field": "resource_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "lakeformation:ListResources"
+      ]
+    },
+    "aws:lambda:function": {
+      "node_type": "ServerlessFunction",
+      "service": "aws:lambda",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "lambda:ListFunctions",
+        "id_field": "function_name",
+        "arn_field": "function_arn",
+        "attributes": [
+          "role_arn",
+          "runtime"
+        ],
+        "yields": [
+          "function_name"
+        ]
+      },
+      "detail": [
+        {
+          "operation": "lambda:GetFunction",
+          "bind": {
+            "FunctionName": "$function_name"
+          },
+          "capture": [
+            "code_location",
+            "code_sha256"
+          ]
+        },
+        {
+          "operation": "http:GetBlob",
+          "bind": {
+            "url": "$code_location"
+          },
+          "capture": [
+            "code_size",
+            "code_blob_sha",
+            "evidence_ref"
+          ]
+        }
+      ],
+      "required_permissions": [
+        "lambda:ListFunctions",
+        "lambda:GetFunction"
+      ]
+    },
+    "aws:lightsail:instance": {
+      "node_type": "VirtualMachine",
+      "service": "aws:lightsail",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "lightsail:GetInstances",
+        "id_field": "instance_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "lightsail:GetInstances"
+      ]
+    },
+    "aws:macie:classification-job": {
+      "node_type": "SecurityService",
+      "service": "aws:macie",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "macie:ListClassificationJobs",
+        "id_field": "job_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "macie2:ListClassificationJobs"
+      ]
+    },
+    "aws:memorydb:cluster": {
+      "node_type": "Cache",
+      "service": "aws:memorydb",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "memorydb:DescribeClusters",
+        "id_field": "cluster_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "memorydb:DescribeClusters"
+      ]
+    },
+    "aws:mq:broker": {
+      "node_type": "Queue",
+      "service": "aws:mq",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "mq:ListBrokers",
+        "id_field": "broker_id",
+        "arn_field": "broker_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "mq:ListBrokers"
+      ]
+    },
+    "aws:msk:cluster": {
+      "node_type": "Queue",
+      "service": "aws:msk",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "msk:ListClustersV2",
+        "id_field": "cluster_name",
+        "arn_field": "cluster_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "kafka:ListClustersV2"
+      ]
+    },
+    "aws:neptune:db_cluster": {
+      "node_type": "NoSQLDatabase",
+      "service": "aws:neptune",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "neptune:DescribeDBClusters",
+        "id_field": "db_cluster_identifier",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "rds:DescribeDBClusters"
+      ]
+    },
+    "aws:networkfirewall:firewall": {
+      "node_type": "Firewall",
+      "service": "aws:networkfirewall",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "network-firewall:ListFirewalls",
+        "id_field": "firewall_name",
+        "arn_field": "firewall_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "network-firewall:ListFirewalls"
+      ]
+    },
+    "aws:opensearch:domain": {
+      "node_type": "SearchService",
+      "service": "aws:opensearch",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "es:ListDomainNames",
+        "id_field": "domain_name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "es:ListDomainNames"
+      ]
+    },
+    "aws:opsworks:stack": {
+      "node_type": "AutomationService",
+      "service": "aws:opsworks",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "opsworks:DescribeStacks",
+        "id_field": "stack_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "opsworks:DescribeStacks"
+      ]
+    },
+    "aws:organizations:account": {
+      "node_type": "Account",
+      "service": "aws:organizations",
+      "scope": "global",
+      "enumerate": {
+        "operation": "organizations:ListAccounts",
+        "id_field": "account_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "organizations:ListAccounts"
+      ]
+    },
+    "aws:qldb:ledger": {
+      "node_type": "GenericData",
+      "service": "aws:qldb",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "qldb:ListLedgers",
+        "id_field": "ledger_name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "qldb:ListLedgers"
+      ]
+    },
+    "aws:quicksight:dashboard": {
+      "node_type": "AnalyticsService",
+      "service": "aws:quicksight",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "quicksight:ListDashboards",
+        "id_field": "dashboard_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "quicksight:ListDashboards"
+      ]
+    },
+    "aws:ram:resource_share": {
+      "node_type": "ResourcePolicy",
+      "service": "aws:ram",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "ram:GetResourceShares",
+        "id_field": "resource_share_arn",
+        "arn_field": "resource_share_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "ram:GetResourceShares"
+      ]
+    },
+    "aws:rds:db_instance": {
+      "node_type": "RelationalDatabase",
+      "service": "aws:rds",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "rds:DescribeDBInstances",
+        "id_field": "db_instance_identifier",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "rds:DescribeDBInstances"
+      ]
+    },
+    "aws:redshift:cluster": {
+      "node_type": "DataWarehouse",
+      "service": "aws:redshift",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "redshift:DescribeClusters",
+        "id_field": "cluster_identifier",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "redshift:DescribeClusters"
+      ]
+    },
+    "aws:rolesanywhere:trust-anchor": {
+      "node_type": "FederatedIdentity",
+      "service": "aws:rolesanywhere",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "rolesanywhere:ListTrustAnchors",
+        "id_field": "trust_anchor_id",
+        "arn_field": "trust_anchor_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "rolesanywhere:ListTrustAnchors"
+      ]
+    },
+    "aws:route53:hosted_zone": {
+      "node_type": "DNS",
+      "service": "aws:route53",
+      "scope": "global",
+      "enumerate": {
+        "operation": "route53:ListHostedZones",
+        "id_field": "hosted_zone_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "route53:ListHostedZones"
+      ]
+    },
+    "aws:s3:bucket": {
+      "node_type": "ObjectStorage",
+      "service": "aws:s3",
+      "scope": "global",
+      "enumerate": {
+        "operation": "s3:ListBuckets",
+        "id_field": "bucket_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "s3:ListAllMyBuckets"
+      ]
+    },
+    "aws:sagemaker:model": {
+      "node_type": "MLModel",
+      "service": "aws:sagemaker",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "sagemaker:ListModels",
+        "id_field": "model_name",
+        "arn_field": "model_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "sagemaker:ListModels"
+      ]
+    },
+    "aws:sagemaker:notebook-instance": {
+      "node_type": "Notebook",
+      "service": "aws:sagemaker",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "sagemaker:ListNotebookInstances",
+        "id_field": "notebook_instance_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "sagemaker:ListNotebookInstances"
+      ]
+    },
+    "aws:sagemaker:notebook-lifecycle-config": {
+      "node_type": "GenericManagement",
+      "service": "aws:sagemaker",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "sagemaker:ListNotebookInstanceLifecycleConfigs",
+        "id_field": "notebook_instance_lifecycle_config_name",
+        "arn_field": "notebook_instance_lifecycle_config_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "sagemaker:ListNotebookInstanceLifecycleConfigs"
+      ]
+    },
+    "aws:sagemaker:pipeline": {
+      "node_type": "Workflow",
+      "service": "aws:sagemaker",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "sagemaker:ListPipelines",
+        "id_field": "pipeline_name",
+        "arn_field": "pipeline_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "sagemaker:ListPipelines"
+      ]
+    },
+    "aws:sagemaker:processing-job": {
+      "node_type": "BatchJob",
+      "service": "aws:sagemaker",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "sagemaker:ListProcessingJobs",
+        "id_field": "processing_job_name",
+        "arn_field": "processing_job_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "sagemaker:ListProcessingJobs"
+      ]
+    },
+    "aws:sagemaker:studio-lifecycle-config": {
+      "node_type": "GenericManagement",
+      "service": "aws:sagemaker",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "sagemaker:ListStudioLifecycleConfigs",
+        "id_field": "studio_lifecycle_config_name",
+        "arn_field": "studio_lifecycle_config_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "sagemaker:ListStudioLifecycleConfigs"
+      ]
+    },
+    "aws:sagemaker:training-job": {
+      "node_type": "BatchJob",
+      "service": "aws:sagemaker",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "sagemaker:ListTrainingJobs",
+        "id_field": "training_job_name",
+        "arn_field": "training_job_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "sagemaker:ListTrainingJobs"
+      ]
+    },
+    "aws:sagemaker:transform-job": {
+      "node_type": "BatchJob",
+      "service": "aws:sagemaker",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "sagemaker:ListTransformJobs",
+        "id_field": "transform_job_name",
+        "arn_field": "transform_job_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "sagemaker:ListTransformJobs"
+      ]
+    },
+    "aws:secretsmanager:secret": {
+      "node_type": "Secret",
+      "service": "aws:secretsmanager",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "secretsmanager:ListSecrets",
+        "id_field": "secret_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "secretsmanager:ListSecrets"
+      ]
+    },
+    "aws:securityhub:standard": {
+      "node_type": "SecurityService",
+      "service": "aws:securityhub",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "securityhub:GetEnabledStandards",
+        "id_field": "standards_subscription_arn",
+        "arn_field": "standards_subscription_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "securityhub:GetEnabledStandards"
+      ]
+    },
+    "aws:servicecatalog:portfolio": {
+      "node_type": "AutomationService",
+      "service": "aws:servicecatalog",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "servicecatalog:ListPortfolios",
+        "id_field": "portfolio_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "servicecatalog:ListPortfolios"
+      ]
+    },
+    "aws:sns:topic": {
+      "node_type": "Topic",
+      "service": "aws:sns",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "sns:ListTopics",
+        "id_field": "topic_arn",
+        "arn_field": "topic_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "sns:ListTopics"
+      ]
+    },
+    "aws:sqs:queue": {
+      "node_type": "Queue",
+      "service": "aws:sqs",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "sqs:ListQueues",
+        "id_field": "queue_url",
+        "arn_field": "queue_url",
+        "attributes": []
+      },
+      "required_permissions": [
+        "sqs:ListQueues"
+      ]
+    },
+    "aws:ssm-params:parameter": {
+      "node_type": "Secret",
+      "service": "aws:ssm-params",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "ssm:DescribeParameters",
+        "id_field": "parameter_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "ssm:DescribeParameters"
+      ]
+    },
+    "aws:ssm:managed-instance": {
+      "node_type": "VirtualMachine",
+      "service": "aws:ssm",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "ssm:DescribeInstanceInformation",
+        "id_field": "instance_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "ssm:DescribeInstanceInformation"
+      ]
+    },
+    "aws:sso:instance": {
+      "node_type": "GenericManagement",
+      "service": "aws:sso",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "sso:ListInstances",
+        "id_field": "instance_arn",
+        "arn_field": "instance_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "sso:ListInstances"
+      ]
+    },
+    "aws:stepfunctions:state_machine": {
+      "node_type": "Workflow",
+      "service": "aws:stepfunctions",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "states:ListStateMachines",
+        "id_field": "name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "states:ListStateMachines"
+      ]
+    },
+    "aws:tgw:transit-gateway": {
+      "node_type": "TransitGateway",
+      "service": "aws:tgw",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "ec2:DescribeTransitGateways",
+        "id_field": "transit_gateway_id",
+        "arn_field": "transit_gateway_arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "ec2:DescribeTransitGateways"
+      ]
+    },
+    "aws:timestream:database": {
+      "node_type": "GenericData",
+      "service": "aws:timestream",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "timestream:ListDatabases",
+        "id_field": "database_name",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "timestream:ListDatabases"
+      ]
+    },
+    "aws:vpc:vpc": {
+      "node_type": "VirtualNetwork",
+      "service": "aws:vpc",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "vpc:DescribeVpcs",
+        "id_field": "vpc_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "ec2:DescribeVpcs"
+      ]
+    },
+    "aws:vpclattice:service-network": {
+      "node_type": "GenericNetwork",
+      "service": "aws:vpclattice",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "vpc-lattice:ListServiceNetworks",
+        "id_field": "id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "vpc-lattice:ListServiceNetworks"
+      ]
+    },
+    "aws:waf:web_acl": {
+      "node_type": "Firewall",
+      "service": "aws:waf",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "waf:ListWebACLs",
+        "id_field": "web_acl_id",
+        "arn_field": "arn",
+        "attributes": []
+      },
+      "required_permissions": [
+        "wafv2:ListWebACLs"
+      ]
+    }
+  }
+}

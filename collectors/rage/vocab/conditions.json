@@ -1,0 +1,22 @@
+{
+  "$comment": "RAGE condition registry — the vocabulary for an edge/rule's `conditions` (preconditions that gate whether a CONDITIONAL edge is actually traversable). OPEN: rule-specific tokens beyond this core set are allowed; this documents the load-bearing ones a consumer should understand. A CONDITIONAL edge lists the conditions still unmet; an ACTIVE edge has none.",
+  "spec_version": "0.1",
+  "conditions": {
+    "iam_permission": "The principal holds the required IAM permission (effective allow after policy evaluation).",
+    "resource_policy": "The target resource's own policy (bucket/key/secret/queue policy, KV access policy, IAM binding) grants access.",
+    "trust_relationship": "The target identity's trust policy admits the source (role assumption / federation).",
+    "trust_condition": "A condition on the trust relationship must hold (e.g. sts:ExternalId, OIDC aud/sub, SAML audience).",
+    "condition_expression": "An IAM/policy condition block must evaluate true against the request context (IP, MFA, tags, time).",
+    "key_permission": "Access to the wrapping KMS/CMEK key is also required (dual-authorization, e.g. decrypt-gated secret read).",
+    "network_reachability": "A network path (security group / firewall / route / endpoint) must permit the connection.",
+    "trigger_exists": "An invocation trigger or event source must exist for the execution to fire.",
+    "scp_or_org_policy": "No SCP / organization policy denies the action (guardrail not blocking).",
+    "deny_assignment": "No Azure deny assignment blocks the action at the relevant scope.",
+    "permission_boundary": "The principal's permission boundary must also allow the action.",
+    "role_compatibility": "The target role/role-definition must actually grant the emitted capability.",
+    "service_state": "The target service/resource must be in an enabling state (enabled/running/available).",
+    "api_enabled": "The provider API/service must be enabled in the account/project/subscription.",
+    "public_access": "The resource is exposed to anonymous (allUsers) or all-authenticated principals.",
+    "guardrail_enforced": "A guardrail (SCP / deny assignment / org policy) is enforced — used by state-downgrade/upgrade rules."
+  }
+}

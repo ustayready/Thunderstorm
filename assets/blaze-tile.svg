@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" role="img" aria-label="Blaze">
+  <rect width="96" height="96" rx="19.2" fill="#0a0b10"/>
+  <g transform="translate(48,47) scale(0.78) translate(-48,-48)">
+    <path d="M 50.76 8.90 L 85.24 45.10 Q 88 48 85.24 50.90 L 50.76 87.10 Q 48 90 45.24 87.10
+             L 10.76 50.90 Q 8 48 10.76 45.10 L 45.24 8.90 Q 48 6 50.76 8.90 Z" fill="#f4ed2d"/>
+    <polygon points="47,24 57,24 52,35 42,35" fill="#0a0b10"/>
+    <polygon points="47,41 57,41 52,64 42,64" fill="#0a0b10"/>
+  </g>
+</svg>

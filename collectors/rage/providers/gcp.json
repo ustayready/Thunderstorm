@@ -1,0 +1,1167 @@
+{
+  "$comment": "RAGE provider registry (GCP) \u2014 every native resource type, its RAGE node_type (the mapping), and the collection recipe a conforming RAGE Collector uses to enumerate it (enumerate op, id/arn fields, detail-enrichment chain, required permissions). services[] gives the service-level rollup.",
+  "spec_version": "0.1",
+  "provider": "gcp",
+  "services": {
+    "gcp:accesscontextmanager": {
+      "name": "Access Context Manager / VPC-SC",
+      "generic_types": [
+        "ConditionalPolicy"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:aiplatform": {
+      "name": "Vertex AI / Workbench",
+      "generic_types": [
+        "Notebook"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:appengine": {
+      "name": "App Engine",
+      "generic_types": [
+        "ApplicationPlatform"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:artifactregistry": {
+      "name": "Container Registry (legacy GCR)",
+      "generic_types": [
+        "ContainerRegistry"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:batch": {
+      "name": "Batch",
+      "generic_types": [
+        "BatchJob"
+      ],
+      "attack_relevance": "medium"
+    },
+    "gcp:bigquery": {
+      "name": "BigQuery",
+      "generic_types": [
+        "DataWarehouse"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:bigtableadmin": {
+      "name": "Bigtable",
+      "generic_types": [
+        "NoSQLDatabase"
+      ],
+      "attack_relevance": "medium"
+    },
+    "gcp:certificatemanager": {
+      "name": "Certificate Manager / CAS",
+      "generic_types": [
+        "Certificate"
+      ],
+      "attack_relevance": "medium"
+    },
+    "gcp:cloudasset": {
+      "name": "Cloud Asset Inventory",
+      "generic_types": [
+        "ConfigurationService"
+      ],
+      "attack_relevance": "low",
+      "collected": false
+    },
+    "gcp:cloudbuild": {
+      "name": "Cloud Build",
+      "generic_types": [
+        "BuildWorker"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:clouddeploy": {
+      "name": "Cloud Deploy",
+      "generic_types": [
+        "AutomationService"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:cloudfunctions": {
+      "name": "Cloud Functions",
+      "generic_types": [
+        "ServerlessFunction"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:cloudidentity": {
+      "name": "Cloud Identity / Workspace",
+      "generic_types": [
+        "Group"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:cloudkms": {
+      "name": "Cloud KMS",
+      "generic_types": [
+        "EncryptionKey"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:cloudscheduler": {
+      "name": "Cloud Scheduler",
+      "generic_types": [
+        "Scheduler"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:cloudtasks": {
+      "name": "Cloud Tasks",
+      "generic_types": [
+        "Queue"
+      ],
+      "attack_relevance": "medium"
+    },
+    "gcp:composer": {
+      "name": "Cloud Composer (Airflow)",
+      "generic_types": [
+        "Workflow"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:compute": {
+      "name": "VPC / Subnets / Routes",
+      "generic_types": [
+        "BlockStorage",
+        "Firewall",
+        "LoadBalancer",
+        "Subnet",
+        "VirtualMachine",
+        "VirtualNetwork"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:container": {
+      "name": "GKE",
+      "generic_types": [
+        "KubernetesCluster"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:dataflow": {
+      "name": "Dataflow",
+      "generic_types": [
+        "AnalyticsService"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:dataproc": {
+      "name": "Dataproc",
+      "generic_types": [
+        "AnalyticsService"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:datastream": {
+      "name": "Datastream / Data Fusion",
+      "generic_types": [
+        "Workflow"
+      ],
+      "attack_relevance": "medium"
+    },
+    "gcp:deploymentmanager": {
+      "name": "Deployment Manager",
+      "generic_types": [
+        "AutomationService"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:dns": {
+      "name": "Cloud DNS",
+      "generic_types": [
+        "DNS"
+      ],
+      "attack_relevance": "medium"
+    },
+    "gcp:eventarc": {
+      "name": "Eventarc",
+      "generic_types": [
+        "EventRule"
+      ],
+      "attack_relevance": "medium"
+    },
+    "gcp:file": {
+      "name": "Filestore",
+      "generic_types": [
+        "FileStorage"
+      ],
+      "attack_relevance": "low"
+    },
+    "gcp:firestore": {
+      "name": "Firestore / Datastore",
+      "generic_types": [
+        "NoSQLDatabase"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:iam": {
+      "name": "Workload Identity Federation",
+      "generic_types": [
+        "AccessKey",
+        "FederatedIdentity",
+        "Role",
+        "ServiceAccount"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:iam-deny": {
+      "name": "IAM Deny Policies",
+      "generic_types": [
+        "ConditionalPolicy"
+      ],
+      "attack_relevance": "medium",
+      "collected": false
+    },
+    "gcp:iap": {
+      "name": "Identity-Aware Proxy",
+      "generic_types": [
+        "PrivateEndpoint"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:logging": {
+      "name": "Cloud Logging / Audit Logs",
+      "generic_types": [
+        "LoggingService"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:monitoring": {
+      "name": "Cloud Monitoring",
+      "generic_types": [
+        "LoggingService"
+      ],
+      "attack_relevance": "low"
+    },
+    "gcp:networkconnectivity": {
+      "name": "Network Connectivity Center",
+      "generic_types": [
+        "TransitGateway"
+      ],
+      "attack_relevance": "medium"
+    },
+    "gcp:orgpolicy": {
+      "name": "Organization Policy",
+      "generic_types": [
+        "OrganizationPolicy"
+      ],
+      "attack_relevance": "medium"
+    },
+    "gcp:psc": {
+      "name": "Private Service Connect",
+      "generic_types": [
+        "PrivateEndpoint"
+      ],
+      "attack_relevance": "high",
+      "collected": false
+    },
+    "gcp:pubsub": {
+      "name": "Pub/Sub",
+      "generic_types": [
+        "Topic"
+      ],
+      "attack_relevance": "medium"
+    },
+    "gcp:redis": {
+      "name": "Memorystore",
+      "generic_types": [
+        "Cache"
+      ],
+      "attack_relevance": "low"
+    },
+    "gcp:resourcemanager": {
+      "name": "Resource Manager",
+      "generic_types": [
+        "Folder",
+        "Organization",
+        "Project"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:run": {
+      "name": "Cloud Run",
+      "generic_types": [
+        "ContainerService"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:secretmanager": {
+      "name": "Secret Manager",
+      "generic_types": [
+        "Secret"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:securitycenter": {
+      "name": "Security Command Center",
+      "generic_types": [
+        "SecurityService"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:sourcerepos": {
+      "name": "Cloud Source Repositories",
+      "generic_types": [
+        "ArtifactRepository"
+      ],
+      "attack_relevance": "medium",
+      "collected": false
+    },
+    "gcp:spanner": {
+      "name": "Cloud Spanner",
+      "generic_types": [
+        "RelationalDatabase"
+      ],
+      "attack_relevance": "medium"
+    },
+    "gcp:sqladmin": {
+      "name": "Cloud SQL",
+      "generic_types": [
+        "RelationalDatabase"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:storage": {
+      "name": "Cloud Storage",
+      "generic_types": [
+        "ObjectStorage"
+      ],
+      "attack_relevance": "high"
+    },
+    "gcp:workflows": {
+      "name": "Workflows",
+      "generic_types": [
+        "Workflow"
+      ],
+      "attack_relevance": "high"
+    }
+  },
+  "facts": [
+    {
+      "kind": "iam_binding",
+      "collect": {
+        "operation": "getIamPolicy (resourcemanager.{projects,folders,organizations}.getIamPolicy)",
+        "over": "gcp:resourcemanager:project, gcp:resourcemanager:folder, gcp:resourcemanager:organization",
+        "scope": "project"
+      },
+      "backs": [
+        "HasRole",
+        "HasPermission",
+        "CanImpersonate"
+      ],
+      "required_permissions": [
+        "resourcemanager.projects.getIamPolicy",
+        "resourcemanager.folders.getIamPolicy",
+        "resourcemanager.organizations.getIamPolicy"
+      ],
+      "note": "IAM bindings evaluate into effective permissions backing the capability edges"
+    },
+    {
+      "kind": "resource_policy",
+      "collect": {
+        "operation": "<service>.getIamPolicy on the resource",
+        "over": "gcp:storage:bucket, gcp:cloudkms:key-ring, gcp:secretmanager:secret, gcp:iam:service-account",
+        "scope": "project"
+      },
+      "backs": [
+        "HasPolicy",
+        "CanReadData",
+        "CanDecrypt",
+        "CanReadSecret",
+        "CanImpersonate"
+      ],
+      "required_permissions": [
+        "storage.buckets.getIamPolicy",
+        "cloudkms.cryptoKeys.getIamPolicy",
+        "secretmanager.secrets.getIamPolicy",
+        "iam.serviceAccounts.getIamPolicy"
+      ]
+    },
+    {
+      "kind": "public",
+      "collect": {
+        "operation": "allUsers / allAuthenticatedUsers bindings in a getIamPolicy result",
+        "over": "gcp:storage:bucket, gcp:run:service",
+        "scope": "project"
+      },
+      "backs": [
+        "ExposedToInternet",
+        "ExposedToTenant"
+      ],
+      "required_permissions": [
+        "storage.buckets.getIamPolicy",
+        "run.services.getIamPolicy"
+      ]
+    },
+    {
+      "kind": "membership",
+      "collect": {
+        "operation": "cloudidentity.groups.memberships.list",
+        "over": "gcp:cloudidentity:group",
+        "scope": "global"
+      },
+      "backs": [
+        "MemberOf"
+      ],
+      "required_permissions": [
+        "cloudidentity.groups.memberships.list"
+      ]
+    },
+    {
+      "kind": "workload_identity",
+      "collect": {
+        "operation": "iam.serviceAccounts.getIamPolicy (WIF pool bindings) / getOpenIdToken",
+        "over": "gcp:iam:workload-identity-pool, gcp:iam:service-account",
+        "scope": "project"
+      },
+      "backs": [
+        "CanFederateAs",
+        "FederatesTo"
+      ],
+      "required_permissions": [
+        "iam.workloadIdentityPools.get",
+        "iam.serviceAccounts.getIamPolicy"
+      ]
+    }
+  ],
+  "resources": {
+    "gcp:accesscontextmanager:access-policy": {
+      "node_type": "ConditionalPolicy",
+      "service": "gcp:accesscontextmanager",
+      "scope": "global",
+      "enumerate": {
+        "operation": "accesscontextmanager.accessPolicies.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "accesscontextmanager.accessPolicies.list"
+      ]
+    },
+    "gcp:aiplatform:notebook": {
+      "node_type": "Notebook",
+      "service": "gcp:aiplatform",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "notebooks.projects.locations.instances.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "notebooks.instances.list"
+      ]
+    },
+    "gcp:appengine:service": {
+      "node_type": "ApplicationPlatform",
+      "service": "gcp:appengine",
+      "scope": "global",
+      "enumerate": {
+        "operation": "appengine.apps.services.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "appengine.services.list"
+      ]
+    },
+    "gcp:artifactregistry:repository": {
+      "node_type": "ContainerRegistry",
+      "service": "gcp:artifactregistry",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "artifactregistry.projects.locations.repositories.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "artifactregistry.repositories.list"
+      ]
+    },
+    "gcp:batch:job": {
+      "node_type": "BatchJob",
+      "service": "gcp:batch",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "batch.projects.locations.jobs.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "batch.jobs.list"
+      ]
+    },
+    "gcp:bigquery:dataset": {
+      "node_type": "DataWarehouse",
+      "service": "gcp:bigquery",
+      "scope": "global",
+      "enumerate": {
+        "operation": "bigquery.datasets.list",
+        "id_field": "id",
+        "arn_field": "id",
+        "attributes": []
+      },
+      "required_permissions": [
+        "bigquery.datasets.get"
+      ]
+    },
+    "gcp:bigtableadmin:instance": {
+      "node_type": "NoSQLDatabase",
+      "service": "gcp:bigtableadmin",
+      "scope": "global",
+      "enumerate": {
+        "operation": "bigtableadmin.projects.instances.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "bigtable.instances.list"
+      ]
+    },
+    "gcp:certificatemanager:certificate": {
+      "node_type": "Certificate",
+      "service": "gcp:certificatemanager",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "certificatemanager.projects.locations.certificates.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "certificatemanager.certs.list"
+      ]
+    },
+    "gcp:cloudbuild:build": {
+      "node_type": "BuildWorker",
+      "service": "gcp:cloudbuild",
+      "scope": "global",
+      "enumerate": {
+        "operation": "cloudbuild.projects.builds.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "cloudbuild.builds.list"
+      ]
+    },
+    "gcp:clouddeploy:delivery-pipeline": {
+      "node_type": "AutomationService",
+      "service": "gcp:clouddeploy",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "clouddeploy.projects.locations.deliveryPipelines.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "clouddeploy.deliveryPipelines.list"
+      ]
+    },
+    "gcp:cloudfunctions:function": {
+      "node_type": "ServerlessFunction",
+      "service": "gcp:cloudfunctions",
+      "scope": "global",
+      "enumerate": {
+        "operation": "cloudfunctions.projects.locations.functions.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "cloudfunctions.functions.list"
+      ]
+    },
+    "gcp:cloudidentity:group": {
+      "node_type": "Group",
+      "service": "gcp:cloudidentity",
+      "scope": "global",
+      "enumerate": {
+        "operation": "cloudidentity.groups.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "cloudidentity.groups.list"
+      ]
+    },
+    "gcp:cloudkms:key-ring": {
+      "node_type": "EncryptionKey",
+      "service": "gcp:cloudkms",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "cloudkms.projects.locations.keyRings.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "cloudkms.keyRings.list"
+      ]
+    },
+    "gcp:cloudscheduler:job": {
+      "node_type": "Scheduler",
+      "service": "gcp:cloudscheduler",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "cloudscheduler.projects.locations.jobs.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "cloudscheduler.jobs.list"
+      ]
+    },
+    "gcp:cloudtasks:queue": {
+      "node_type": "Queue",
+      "service": "gcp:cloudtasks",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "cloudtasks.projects.locations.queues.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "cloudtasks.queues.list"
+      ]
+    },
+    "gcp:composer:environment": {
+      "node_type": "Workflow",
+      "service": "gcp:composer",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "composer.projects.locations.environments.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "composer.environments.list"
+      ]
+    },
+    "gcp:compute:disk": {
+      "node_type": "BlockStorage",
+      "service": "gcp:compute",
+      "scope": "global",
+      "enumerate": {
+        "operation": "compute.disks.aggregatedList",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "compute.disks.list"
+      ]
+    },
+    "gcp:compute:firewall": {
+      "node_type": "Firewall",
+      "service": "gcp:compute",
+      "scope": "global",
+      "enumerate": {
+        "operation": "compute.firewalls.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "compute.firewalls.list"
+      ]
+    },
+    "gcp:compute:forwarding-rule": {
+      "node_type": "LoadBalancer",
+      "service": "gcp:compute",
+      "scope": "global",
+      "enumerate": {
+        "operation": "compute.forwardingRules.aggregatedList",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "compute.forwardingRules.list"
+      ]
+    },
+    "gcp:compute:instance": {
+      "node_type": "VirtualMachine",
+      "service": "gcp:compute",
+      "scope": "global",
+      "enumerate": {
+        "operation": "compute.instances.aggregatedList",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "compute.instances.list"
+      ]
+    },
+    "gcp:compute:network": {
+      "node_type": "VirtualNetwork",
+      "service": "gcp:compute",
+      "scope": "global",
+      "enumerate": {
+        "operation": "compute.networks.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "compute.networks.list"
+      ]
+    },
+    "gcp:compute:security-policy": {
+      "node_type": "Firewall",
+      "service": "gcp:compute",
+      "scope": "global",
+      "enumerate": {
+        "operation": "compute.securityPolicies.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "compute.securityPolicies.list"
+      ]
+    },
+    "gcp:compute:subnetwork": {
+      "node_type": "Subnet",
+      "service": "gcp:compute",
+      "scope": "region",
+      "enumerate": {
+        "operation": "compute.subnetworks.aggregatedList",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "compute.subnetworks.list"
+      ]
+    },
+    "gcp:container:cluster": {
+      "node_type": "KubernetesCluster",
+      "service": "gcp:container",
+      "scope": "global",
+      "enumerate": {
+        "operation": "container.projects.locations.clusters.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "container.clusters.list"
+      ]
+    },
+    "gcp:dataflow:job": {
+      "node_type": "AnalyticsService",
+      "service": "gcp:dataflow",
+      "scope": "global",
+      "enumerate": {
+        "operation": "dataflow.projects.jobs.aggregated",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "dataflow.jobs.list"
+      ]
+    },
+    "gcp:dataproc:cluster": {
+      "node_type": "AnalyticsService",
+      "service": "gcp:dataproc",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "dataproc.projects.regions.clusters.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "dataproc.clusters.list"
+      ]
+    },
+    "gcp:datastream:stream": {
+      "node_type": "Workflow",
+      "service": "gcp:datastream",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "datastream.projects.locations.streams.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "datastream.streams.list"
+      ]
+    },
+    "gcp:deploymentmanager:deployment": {
+      "node_type": "AutomationService",
+      "service": "gcp:deploymentmanager",
+      "scope": "global",
+      "enumerate": {
+        "operation": "deploymentmanager.deployments.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "deploymentmanager.deployments.list"
+      ]
+    },
+    "gcp:dns:managed-zone": {
+      "node_type": "DNS",
+      "service": "gcp:dns",
+      "scope": "global",
+      "enumerate": {
+        "operation": "dns.managedZones.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "dns.managedZones.list"
+      ]
+    },
+    "gcp:eventarc:trigger": {
+      "node_type": "EventRule",
+      "service": "gcp:eventarc",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "eventarc.projects.locations.triggers.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "eventarc.triggers.list"
+      ]
+    },
+    "gcp:file:instance": {
+      "node_type": "FileStorage",
+      "service": "gcp:file",
+      "scope": "global",
+      "enumerate": {
+        "operation": "file.projects.locations.instances.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "file.instances.list"
+      ]
+    },
+    "gcp:firestore:database": {
+      "node_type": "NoSQLDatabase",
+      "service": "gcp:firestore",
+      "scope": "global",
+      "enumerate": {
+        "operation": "firestore.projects.databases.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "datastore.databases.list"
+      ]
+    },
+    "gcp:iam:role": {
+      "node_type": "Role",
+      "service": "gcp:iam",
+      "scope": "global",
+      "enumerate": {
+        "operation": "iam.projects.roles.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "iam.roles.list"
+      ]
+    },
+    "gcp:iam:service-account": {
+      "node_type": "ServiceAccount",
+      "service": "gcp:iam",
+      "scope": "global",
+      "enumerate": {
+        "operation": "iam.projects.serviceAccounts.list",
+        "id_field": "email",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "iam.serviceAccounts.list"
+      ]
+    },
+    "gcp:iam:service-account-key": {
+      "node_type": "AccessKey",
+      "service": "gcp:iam",
+      "scope": "project",
+      "enumerate": {
+        "operation": "iam.projects.serviceAccounts.keys.list",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "iam.serviceAccountKeys.list"
+      ]
+    },
+    "gcp:iam:workload-identity-pool": {
+      "node_type": "FederatedIdentity",
+      "service": "gcp:iam",
+      "scope": "global",
+      "enumerate": {
+        "operation": "iam.projects.locations.workloadIdentityPools.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "iam.workloadIdentityPools.list"
+      ]
+    },
+    "gcp:iap:tunnel": {
+      "node_type": "PrivateEndpoint",
+      "service": "gcp:iap",
+      "scope": "global",
+      "enumerate": {
+        "operation": "iap.projects.iap_tunnel.locations.destGroups.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "iap.tunnelDestGroups.list"
+      ]
+    },
+    "gcp:logging:sink": {
+      "node_type": "LoggingService",
+      "service": "gcp:logging",
+      "scope": "global",
+      "enumerate": {
+        "operation": "logging.projects.sinks.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "logging.sinks.list"
+      ]
+    },
+    "gcp:monitoring:notification-channel": {
+      "node_type": "LoggingService",
+      "service": "gcp:monitoring",
+      "scope": "global",
+      "enumerate": {
+        "operation": "monitoring.projects.notificationChannels.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "monitoring.notificationChannels.list"
+      ]
+    },
+    "gcp:networkconnectivity:hub": {
+      "node_type": "TransitGateway",
+      "service": "gcp:networkconnectivity",
+      "scope": "global",
+      "enumerate": {
+        "operation": "networkconnectivity.projects.locations.global.hubs.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "networkconnectivity.hubs.list"
+      ]
+    },
+    "gcp:orgpolicy:policy": {
+      "node_type": "OrganizationPolicy",
+      "service": "gcp:orgpolicy",
+      "scope": "global",
+      "enumerate": {
+        "operation": "orgpolicy.projects.policies.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "orgpolicy.policies.list"
+      ]
+    },
+    "gcp:pubsub:topic": {
+      "node_type": "Topic",
+      "service": "gcp:pubsub",
+      "scope": "global",
+      "enumerate": {
+        "operation": "pubsub.projects.topics.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "pubsub.topics.list"
+      ]
+    },
+    "gcp:redis:instance": {
+      "node_type": "Cache",
+      "service": "gcp:redis",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "redis.projects.locations.instances.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "redis.instances.list"
+      ]
+    },
+    "gcp:resourcemanager:folder": {
+      "node_type": "Folder",
+      "service": "gcp:resourcemanager",
+      "scope": "global",
+      "enumerate": {
+        "operation": "cloudresourcemanager.folders.list",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "resourcemanager.folders.list"
+      ]
+    },
+    "gcp:resourcemanager:organization": {
+      "node_type": "Organization",
+      "service": "gcp:resourcemanager",
+      "scope": "global",
+      "enumerate": {
+        "operation": "cloudresourcemanager.organizations.search",
+        "id_field": "id"
+      },
+      "required_permissions": [
+        "resourcemanager.organizations.get"
+      ]
+    },
+    "gcp:resourcemanager:project": {
+      "node_type": "Project",
+      "service": "gcp:resourcemanager",
+      "scope": "global",
+      "enumerate": {
+        "operation": "cloudresourcemanager.projects.get",
+        "id_field": "projectId",
+        "arn_field": "projectId",
+        "attributes": []
+      },
+      "required_permissions": [
+        "resourcemanager.projects.list"
+      ]
+    },
+    "gcp:run:service": {
+      "node_type": "ContainerService",
+      "service": "gcp:run",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "run.projects.locations.services.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "run.services.list"
+      ]
+    },
+    "gcp:secretmanager:secret": {
+      "node_type": "Secret",
+      "service": "gcp:secretmanager",
+      "scope": "global",
+      "enumerate": {
+        "operation": "secretmanager.projects.secrets.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "secretmanager.secrets.list"
+      ]
+    },
+    "gcp:securitycenter:source": {
+      "node_type": "SecurityService",
+      "service": "gcp:securitycenter",
+      "scope": "global",
+      "enumerate": {
+        "operation": "securitycenter.projects.sources.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "securitycenter.sources.list"
+      ]
+    },
+    "gcp:spanner:instance": {
+      "node_type": "RelationalDatabase",
+      "service": "gcp:spanner",
+      "scope": "global",
+      "enumerate": {
+        "operation": "spanner.projects.instances.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "spanner.instances.list"
+      ]
+    },
+    "gcp:sqladmin:instance": {
+      "node_type": "RelationalDatabase",
+      "service": "gcp:sqladmin",
+      "scope": "global",
+      "enumerate": {
+        "operation": "sql.instances.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "cloudsql.instances.list"
+      ]
+    },
+    "gcp:storage:bucket": {
+      "node_type": "ObjectStorage",
+      "service": "gcp:storage",
+      "scope": "global",
+      "enumerate": {
+        "operation": "storage.buckets.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "storage.buckets.list"
+      ]
+    },
+    "gcp:workflows:workflow": {
+      "node_type": "Workflow",
+      "service": "gcp:workflows",
+      "scope": "regional",
+      "enumerate": {
+        "operation": "workflows.projects.locations.workflows.list",
+        "id_field": "name",
+        "arn_field": "name",
+        "attributes": []
+      },
+      "required_permissions": [
+        "workflows.workflows.list"
+      ]
+    }
+  }
+}

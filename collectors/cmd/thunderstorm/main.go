@@ -62,6 +62,7 @@ func usage() {
            -v/--verbose  richer per-phase detail (per-service breakdown, outcome counts)
            --debug       stream every API call in/out/error to stderr (implies --verbose)
            Long scans survive terminal hangup (SIGHUP ignored); Ctrl-C stops cleanly.
+           Denied region discovery (ec2:DescribeRegions) degrades to --only-regions or a default set, not a hard failure.
   redact   --in <engagement.zip> --out <path> [--audit <path>]
            Rewrite an engagement into a de-identified, graph-isomorphic copy.
   view     [--in <engagement.zip|.ndjson>]

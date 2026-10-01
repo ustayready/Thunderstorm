@@ -40,6 +40,9 @@ default `./output/`), `--region` (bootstrap region for global calls),
 
 - **Auth + scope discovery** — verifies the caller, discovers collectable
   regions/projects/subscriptions, and records a coverage ledger so gaps are visible.
+  If region discovery itself is denied (AWS `ec2:DescribeRegions`), the scan records
+  the gap and falls back to `--only-regions` (when given) or a default commercial
+  region set instead of aborting; regions outside that set may be missed.
 - **Registry-driven collection** — a DAG of `enumerate → bound detail` calls whose
   recipes come entirely from RAGE `providers/<provider>.json` (never a local schema).
 - **Exposure probing** — read-only probes of the RAGE `exposure-db` catalog for

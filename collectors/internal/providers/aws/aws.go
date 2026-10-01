@@ -5,6 +5,7 @@ package aws
 import (
 	"context"
 	"fmt"
+	"sort"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -101,5 +102,58 @@ func (c *Client) Regions(ctx context.Context) ([]Region, error) {
 
 // Config exposes the loaded config for per-service clients (M1+).
 func (c *Client) Config() aws.Config { return c.cfg }
+
+// defaultEnabledRegions is the AWS commercial partition's default-enabled
+// (non-opt-in) regions. It's the fallback when ec2:DescribeRegions is denied, so a
+// scan keeps running instead of aborting. Opt-in regions (af-south-1, ap-east-1,
+// me-*, eu-south-* and the rest), GovCloud, and China are NOT here: a caller that
+// needs one of those under denied discovery has to name it with --only-regions.
+var defaultEnabledRegions = []string{
+	"us-east-1", "us-east-2", "us-west-1", "us-west-2",
+	"ca-central-1",
+	"eu-west-1", "eu-west-2", "eu-west-3", "eu-central-1", "eu-north-1",
+	"ap-northeast-1", "ap-northeast-2", "ap-northeast-3",
+	"ap-south-1", "ap-southeast-1", "ap-southeast-2",
+	"sa-east-1",
+}
+
+// FallbackRegions builds a region list without calling DescribeRegions, for the
+// denied-discovery path. If the caller named regions (only is non-empty) it uses
+// exactly those, so an explicit set outside defaultEnabledRegions still works;
+// otherwise it unions bootstrapRegion with the default commercial set. Every
+// region comes back Collectable with OptInStatus "unknown". Why "unknown": nothing
+// here can check opt-in status without the API, and a not-opted-in region just
+// produces denied gaps downstream like any other denial.
+func FallbackRegions(bootstrapRegion string, only map[string]bool) []Region {
+	var names []string
+	seen := map[string]bool{}
+	add := func(n string) {
+		if n == "" || seen[n] {
+			return
+		}
+		seen[n] = true
+		names = append(names, n)
+	}
+	if len(only) > 0 {
+		keys := make([]string, 0, len(only))
+		for n := range only {
+			keys = append(keys, n)
+		}
+		sort.Strings(keys)
+		for _, n := range keys {
+			add(n)
+		}
+	} else {
+		add(bootstrapRegion)
+		for _, n := range defaultEnabledRegions {
+			add(n)
+		}
+	}
+	regions := make([]Region, 0, len(names))
+	for _, n := range names {
+		regions = append(regions, Region{Name: n, OptInStatus: "unknown", Collectable: true})
+	}
+	return regions
+}
 
 const optNotOptedIn = "not-opted-in"

@@ -74,11 +74,25 @@ func setupAWS(ctx context.Context, opts Options, led *ledger.Ledger, onlyRegions
 	led.Plan(regTask, model.Scope{Provider: "aws", Account: id.Account, Global: true}, "aws:ec2:region", "ec2:DescribeRegions")
 	led.Start(regTask)
 	regions, err := cli.Regions(ctx)
-	if err != nil {
+	switch {
+	case err == nil:
+		led.Finish(regTask, model.OutcomeOK, len(regions), "")
+	case awsprov.Classify(err) == "denied":
+		// Region discovery is the only permission whose denial used to kill the
+		// whole scan. Handle it like every other denied op: record the coverage
+		// gap, then fall back to a region set so collection still runs. An explicit
+		// --only-regions supplies that set; without it we use the default
+		// commercial list. Throttles and other errors still fail hard below, since
+		// they break every call that follows anyway.
+		led.Finish(regTask, model.OutcomeDenied, 0, "denied, using fallback region set")
+		regions = awsprov.FallbackRegions(opts.BootstrapRegion, onlyRegions)
+		if !opts.Quiet {
+			fmt.Printf("warning: ec2:DescribeRegions denied, using fallback region set (%d regions); coverage may miss regions outside it; pass --only-regions to force a set\n", len(regions))
+		}
+	default:
 		led.Finish(regTask, model.OutcomeError, 0, err.Error())
 		return nil, fmt.Errorf("ec2:DescribeRegions failed: %w", err)
 	}
-	led.Finish(regTask, model.OutcomeOK, len(regions), "")
 
 	b := &binding{
 		name: "aws", account: id.Account, caller: id.ARN, cli: cli,
